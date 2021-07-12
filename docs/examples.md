@@ -57,7 +57,7 @@ In each iteration, the content of the 0th cell of memory is printed in decimal. 
 
 This code outputs `0123456789`.
 
-## Hello, world!
+## Hello World
 
 Using the knowledge from the previous example, we can now write a program which outputs "Hello, world!".
 
