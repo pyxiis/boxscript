@@ -54,14 +54,13 @@ Why? Because they don't share appropriate 3-junction characters with the other b
 
 ### Numbers
 
-Numbers are the only form of data in BS. The first digit is always the sign of the number, with `▀` being positive and `▄` being negative. The postceding digits are the actual number in binary, with 0 being `▄` and 1 being `▀`. `▣` is a delimiter which functions like a decimal point in human-readable numbers. `▀▄▣▄▀` would therefore represent 0.25.
+Numbers are the only form of data in BS. The first digit is always the sign of the number, with `▀` being positive and `▄` being negative. The postceding digits are the actual number in binary, with 0 being `▄` and 1 being `▀`. `▄▀▄▄▀▄` would therefore represent -18.
 
 ### Memory
 
 `◇` represents an array which can store an arbitrary number of numbers.
 Each cell can be accessed by its index, where the index is a number immediately postceding the `◇`. Hence, `◇▀▄` would represent the 0th cell.
-
-Interestingly, unlike an array, any number can be used as an index. Cells have 0 as their default value. Since the actual implementation uses a hashmap-like object, even noninteger indices can be used.
+Each cell has a default value of 0.
 
 ## Operators
 
