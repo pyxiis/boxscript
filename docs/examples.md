@@ -21,7 +21,7 @@ BS is an esoteric language, like Brainfuck or Hexagony. It is not meant to be pr
 
 The first 3 lines are comments. These are ignored by the interpreter, unless they present a syntax error.
 
-Lines 5-7 have a bolded border. Notice how it is ambiguous what the bottom border of this box shoul be—is it bold because of the code above or normal because of the code below? This does not matter. Do as you please.
+Lines 5-7 have a bolded border. Notice how it is ambiguous what the bottom border of this box should be—is it bold because of the code above or normal because of the code below? This does not matter. Do as you please.
 
 Anyways, back to lines 5-7. The code which is checked is `◇▀▄▨▀▀▄▀▄`.
 There are a few parts to this code:
