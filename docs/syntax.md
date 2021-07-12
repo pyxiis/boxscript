@@ -108,6 +108,7 @@ The order of operations, from lowest to highest precedence, is:
 - Shifts (`▚`, `▞`)
 - Addition (`▦`)
 - Multiplication (`▩`)
+- Memory access
 - NOT (`▔`)
 
 Should this order be undesireable, expressions put between `▕` and `▏` will be evaluated first. These are essentially opened and closed parentheses, respectively. For example, `▔▕▀▀▀▨▀▀▄▏▩▀▀▄▀` should evaluate to `▄▀▄▀`.
