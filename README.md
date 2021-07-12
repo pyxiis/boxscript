@@ -29,7 +29,7 @@ Here are some examples of empty boxes:
 ╚═══════════════════╝
 ```
 
-Note that box must have continuous edges (that is, edges which conform to their surrouning edges).
+Note that box must have continuous edges (that is, edges must conform to their surrounding edges).
 
 A box is defined by having 4 corners. In the first box, `┌`, `┐`, `└`, and `┘` are corners. In the second box, `┏`, `┓`, `└`, and `┘` are corners. In the third box, `╔`, `╗`, `╚`, and `╝` are corners.
 
