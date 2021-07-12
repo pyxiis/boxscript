@@ -39,6 +39,8 @@ These denote the separation of chunks of code.
 Any transition between border styles must be done by a 3-junction or by initiating another box.
 This means that characters such as `╽` and `╿` are not allowed.
 
+Just as with boxes, no more than 1 block of the same level may occupy the same row.
+
 Each border type has a specific meaning.
 
 Normal borders are simply executed code.
@@ -47,3 +49,41 @@ Bolded borders represent conditionals. In BS, each box actually represents a loo
 
 Doubled borders are comments.
 Why? Because they don't share appropriate 3-junction characters with the other border styles. This means that they cannot connect with meaningful code, and therefore, are difficult to find a use-case for.
+
+## Data
+
+### Numbers
+
+Numbers are the only form of data in BS. The first digit is always the sign of the number, with `▀` being positive and `▄` being negative. The postceding digits are the actual number in binary, with 0 being `▄` and 1 being `▀`. `▣` is a delimiter which functions like a decimal point in human-readable numbers. `▀▄▣▄▀` would therefore represent 0.25.
+
+### Memory
+
+`◇` represents an array which can store an arbitrary number of numbers.
+Each cell can be accessed by its index, where the index is a number immediately postceding the `◇`. Hence, `◇▀▄` would represent the 0th cell.
+
+Interestingly, unlike an array, any number can be used as an index. Cells have 0 as their default value. Since the actual implementation uses a hashmap-like object, even noninteger indices can be used.
+
+## Operators
+
+### Comparison
+
+These operators are all binary.
+
+`▨` is equivalent to `<` in most languages.
+Similarly, `▧` is equivalent to `>` and `▤` is equivalent to `==`.
+`▨▤` and `▧▤` are equivalent to `<=` and `>=`, respectively.
+Lastly, `▥` is equivalent to `!=`.
+
+### Bitwise
+
+TBD
+
+### Arithmetic
+
+These operators are all binary.
+
+`▦` is the addition operator. The multiplication operator is `▩`. There are no other arithmetic operators. Subtraction and division are done through adding/multiplying additive/multiplicative inverses.
+
+## IO
+
+`▭` outputs the postceding value. `▯` represents input, and can be accessed similarly to `◇`.

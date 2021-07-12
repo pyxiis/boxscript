@@ -10,7 +10,7 @@
 ┏━━━━━━━━━━━━┓
 ┃◇▀▄▨▀▀▄▀▄   ┃
 ┡━━━━━━━━━━━━┩
-│□◇▀▄▦▀▀▀▄▄▄▄│
+│▭◇▀▄▦▀▀▀▄▄▄▄│
 ├────────────┤
 │◇▀▄◈◇▀▄▦▀▀  │
 └────────────┘
@@ -30,15 +30,15 @@ There are a few parts to this code:
   - You can access a memory cell by writing `◇` followed by a number, as seen in `◇▀▄`. These cells default to 0, but support any real number. Numbers will be covered later.
 - `▨` is equivalent to `<` in most languages. Similarly, `▧` is equivalent to `>` and `▤` is equivalent to `==`.
 - `▀▀▄▀▄` is a number—10. Numbers are the only data type BS supports.
-The first digit is always the sign of the number, with `▀` being positive and `▄` being negative. The postceding digits are the actual number in binary, with 0 being `▄` and 1 being `▀`. `▥` is a delimiter which functions like a decimal point in human-readable numbers. `▀▄▥▄▀` would therefore represent 0.25.
+The first digit is always the sign of the number, with `▀` being positive and `▄` being negative. The postceding digits are the actual number in binary, with 0 being `▄` and 1 being `▀`. `▣` is a delimiter which functions like a decimal point in human-readable numbers. `▀▄▣▄▀` would therefore represent 0.25.
 
 The conditional checks whether the 0th cell in memory is less than 10.
 
 Lines 7-11 are executed code. The border between lines 8 and 10 is not mandatory, but it is recommended by BS's BDFL.
 
-`□◇▀▄▦▀▀▀▄▄▄▄` is interpreted like this:
+`▭◇▀▄▦▀▀▀▄▄▄▄` is interpreted like this:
 
-- `□` is the output function. It outputs the Unicode character corresponding to the number given.
+- `▭` is the output function. It outputs the Unicode character corresponding to the number given.
 - `◇▀▄` is something you should definitely remember from before—the 0th cell of memory.
 - `▦` is addition.
 - `▀▀▀▄▄▄▄` is 48. We add this because the ASCII code for `0` is 48.
@@ -69,18 +69,18 @@ The code below will not be explained, but exists because every language needs a 
 ╚══════════════════════╝
 
 ┌─────────┐
-│□▀▀▄▄▀▄▄▄│
-│□▀▀▀▄▄▀▄▀│
-│□▀▀▀▄▀▀▄▄│
-│□▀▀▀▄▀▀▄▄│
-│□▀▀▀▄▀▀▀▀│
-│□▀▀▄▀▀▄▄ │
-│□▀▀▄▄▄▄▄ │
-│□▀▀▀▀▄▀▀▀│
-│□▀▀▀▄▀▀▀▀│
-│□▀▀▀▀▄▄▀▄│
-│□▀▀▀▄▀▀▄▄│
-│□▀▀▀▄▄▀▄▄│
-│□▀▀▄▄▄▄▀ │
+│▭▀▀▄▄▀▄▄▄│
+│▭▀▀▀▄▄▀▄▀│
+│▭▀▀▀▄▀▀▄▄│
+│▭▀▀▀▄▀▀▄▄│
+│▭▀▀▀▄▀▀▀▀│
+│▭▀▀▄▀▀▄▄ │
+│▭▀▀▄▄▄▄▄ │
+│▭▀▀▀▀▄▀▀▀│
+│▭▀▀▀▄▀▀▀▀│
+│▭▀▀▀▀▄▄▀▄│
+│▭▀▀▀▄▀▀▄▄│
+│▭▀▀▀▄▄▀▄▄│
+│▭▀▀▄▄▄▄▀ │
 └─────────┘
 ```
