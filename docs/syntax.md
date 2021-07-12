@@ -74,6 +74,8 @@ Similarly, `▧` is equivalent to `>` and `▤` is equivalent to `==`.
 `▨▤` and `▧▤` are equivalent to `<=` and `>=`, respectively.
 Lastly, `▥` is equivalent to `!=`.
 
+In order to maintain the fact that BS only has numbers, booleans are represented by 0 or 1.
+
 ### Bitwise
 
 TBD
