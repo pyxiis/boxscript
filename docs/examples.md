@@ -38,7 +38,7 @@ BS is an esoteric language, like Brainfuck or Hexagony. It is not meant to be pr
 
 The first 3 lines are comments. These are ignored by the interpreter, unless they present a syntax error.
 
-As it would be tedious to explain how everything works, here is the line-by-line python tranlation:
+As it would be tedious to explain how everything works, here is the line-by-line Python translation:
 
 ```py
 """
