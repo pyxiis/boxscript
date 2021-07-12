@@ -73,7 +73,7 @@ while True:
 
 ## Hello World
 
-Using the knowledge from the previous example, we can now write a program which outputs "Hello, world!".
+We can also write a program which outputs "Hello, world!".
 
 The code below will not be explained, but exists because every language needs a "Hello, world!" program.
 
