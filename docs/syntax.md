@@ -73,14 +73,7 @@ Spaces are not necessary between terms.
 
 ### Comparison
 
-These operators are all binary.
-
-`▨` is equivalent to `<` in most languages.
-Similarly, `▧` is equivalent to `>` and `▤` is equivalent to `==`.
-`▨▤` and `▧▤` are equivalent to `<=` and `>=`, respectively.
-Lastly, `▥` is equivalent to `!=`.
-
-In order to maintain the fact that BS only has numbers, booleans are represented by 0 or 1.
+These operators do not exist. As booleans are represented by 0 or non-0, this is possible using only bitwise operators.
 
 ### Assignment
 
@@ -96,26 +89,23 @@ The following bitwise operators are all binary.
 
 ### Arithmetic
 
-These operators are all binary.
-
-`▦` is the addition operator. The multiplication operator is `▩`. There are no other arithmetic operators. Subtraction and division are done through adding/multiplying additive/multiplicative inverses.
+These operators do not exist. All operations are possible using only bitwise operators.
 
 ### Order of Operations
 
 The order of operations, from lowest to highest precedence, is:
 
 - Output/assignment
-- Comparison operators (e.g. `▨`, `▧`, `▤`)
 - OR (`▓`)
 - XOR (`▒`)
 - AND (`░`)
 - Shifts (`▚`, `▞`)
-- Addition (`▦`)
-- Multiplication (`▩`)
 - Memory access
 - NOT (`▔`)
 
-Should this order be undesireable, expressions put between `▕` and `▏` will be evaluated first. These are essentially opened and closed parentheses, respectively. For example, `▔▕▀▀▀▨▀▀▄▏▩▀▀▄▀` should evaluate to `▄▀▄▀`.
+When there are 2 operations of the same precedence, they are done from left to right.
+
+Should this order be undesireable, expressions put between `▕` and `▏` will be evaluated first. These are essentially opened and closed parentheses, respectively. For example, `▀▀▒▔▕▀▀▀░▀▀▄▏` should evaluate to `▄▀▄▄`.
 
 ## IO
 
