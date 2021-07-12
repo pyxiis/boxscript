@@ -82,6 +82,10 @@ Lastly, `▥` is equivalent to `!=`.
 
 In order to maintain the fact that BS only has numbers, booleans are represented by 0 or 1.
 
+### Assignment
+
+`◈` is the assignment operator. This is because `◈` "fills in" `◇`. It fills the preceding cell with the postceding value.
+
 ### Bitwise
 
 `▔` represents NOT. This is a unary operator.
