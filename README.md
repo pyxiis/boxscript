@@ -52,11 +52,12 @@ Bolded borders represent conditionals. In BS, each box actually represents a loo
 Doubled borders are comments.
 Why? Because they don't share appropriate 3-junction characters with the other border styles. This means that they cannot connect with meaningful code, and therefore, are difficult to find a use-case for.
 
-### Example
+## Examples
 
-We are now ready to start writing some code. 
+We are now ready to start writing some code.
+Explanations will sometimes be provided.
 
-#### Printing 0-9
+### Printing 0-9
 
 ```bs
 ╔═══════════════════╗
@@ -113,7 +114,7 @@ In each iteration, the content of the 0th cell of memory is printed in decimal. 
 
 This code outputs `0123456789`.
 
-#### Hello, world!
+### Hello, world!
 
 Using the knowledge from the previous example, we can now write a program which outputs "Hello, world!".
 
