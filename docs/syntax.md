@@ -65,6 +65,12 @@ Interestingly, unlike an array, any number can be used as an index. Cells have 0
 
 ## Operators
 
+Unary operators are invoked in this form: `<operator> A`.
+
+Binary operators are invoked in this form: `A <operator> B`.
+
+Spaces are not necessary between terms.
+
 ### Comparison
 
 These operators are all binary.
@@ -78,13 +84,33 @@ In order to maintain the fact that BS only has numbers, booleans are represented
 
 ### Bitwise
 
-TBD
+`▔` represents NOT. This is a unary operator.
+
+The following bitwise operators are all binary.
+
+`░` represents AND. `▒` represents XOR. `▓` represents OR. `▚` represents left shift. `▞` represents right shift.
 
 ### Arithmetic
 
 These operators are all binary.
 
 `▦` is the addition operator. The multiplication operator is `▩`. There are no other arithmetic operators. Subtraction and division are done through adding/multiplying additive/multiplicative inverses.
+
+### Order of Operations
+
+The order of operations, from lowest to highest precedence, is:
+
+- Output/assignment
+- Comparison operators (e.g. `▨`, `▧`, `▤`)
+- OR (`▓`)
+- XOR (`▒`)
+- AND (`░`)
+- Shifts (`▚`, `▞`)
+- Addition (`▦`)
+- Multiplication (`▩`)
+- NOT (`▔`)
+
+Should this order be undesireable, expressions put between `▕` and `▏` will be evaluated first. These are essentially opened and closed parentheses, respectively. For example, `▔▕▀▀▀▨▀▀▄▏▩▀▀▄▀` should evaluate to `▄▀▄▀`.
 
 ## IO
 
