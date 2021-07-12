@@ -47,4 +47,3 @@ Bolded borders represent conditionals. In BS, each box actually represents a loo
 
 Doubled borders are comments.
 Why? Because they don't share appropriate 3-junction characters with the other border styles. This means that they cannot connect with meaningful code, and therefore, are difficult to find a use-case for.
-
