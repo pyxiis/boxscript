@@ -90,9 +90,9 @@ def tokenize(code: str) -> list[Token]:
                 tokens.append(Token(Atom.NUM, value))
             else:
                 tokens.append(Token(Atom.NUM, 0))
-            code = code[len(m.group()):]
+            code = code[len(m.group()) :]
         elif m := (match(r"[╔╚╠]═*[╗╝╣]") or match(r"[║][^\n]*[║]")):
-            code = code[len(m.group()):]
+            code = code[len(m.group()) :]
         else:
             if code[0] in "┌└├┞┟┏┗┣┢┡":
                 if code[0] in "┌┏":
