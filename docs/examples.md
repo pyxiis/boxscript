@@ -49,7 +49,7 @@ while True:
     if not m[+0] ^ +10: break
 
     m[+1] = m[+0] ^ +48
-    m[+2] = m[0] & +48
+    m[+2] = m[+0] & +48
 
     while True:
         if not m[+2]: break
@@ -58,7 +58,7 @@ while True:
         m[+2] = m[+1] & m[+3]
         m[+1] = m[+1] ^ m[+3]
 
-    print(chr(m[+1]))
+    print(end=chr(m[+1]))
 
     m[+1] = m[+0] & +1
     m[+0] = m[+0] ^ +1
