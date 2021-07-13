@@ -51,8 +51,10 @@ def neighbors(text: str, pos: list[int]) -> dict[str, str]:
         pos (list[int]): The location in the form [row, column]
 
     Returns:
-        dict[str, str]: A dictionary of neighbors of the form {"N": `chr`, "S": `chr`, "E": `chr`, "W": `chr`}.
-            If there is no neighboring character in a cardinal direction, then that `chr` will be \0.
+        dict[str, str]: A dictionary of neighbors of the form
+            {"N": `chr`, "S": `chr`, "E": `chr`, "W": `chr`}.
+            If there is no neighboring character in a cardinal direction,
+            then that `chr` will be \0.
     """
     r, c = pos
     chars = [[*line] for line in text.splitlines()]
