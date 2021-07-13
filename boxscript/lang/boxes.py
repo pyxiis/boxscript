@@ -10,6 +10,9 @@ ADJACENT = {
     "│": {"N": "│├┤┌┐┞┦┡┩", "S": "│├┤└┘┟┧┢┪"},
     "┃": {"N": "┃┣┫┏┓┟┧┢┪", "S": "┃┣┫┗┛┞┦┡┩"},
     "║": {"N": "║╠╣╔╗", "S": "║╠╣╚╝"},
+    "─": {"E": "─┐┘┤┦┧", "W": "─┌└├┞┟"},
+    "━": {"E": "━┓┛┫┪┩", "W": "━┏┗┣┢┡"},
+    "═": {"E": "═╗╝╣", "W": "═╔╚╠"},
     "┌": {"S": "│├└┟┢", "E": "─┐"},
     "┐": {"S": "│┤┘┧┪", "W": "─┌"},
     "└": {"N": "│├┌┞┡", "E": "─┘"},
@@ -37,6 +40,9 @@ ADJACENT = {
     "╠": {"N": "║╠╔", "S": "║╠╚", "E": "═╣"},
     "╣": {"N": "║╣╗", "S": "║╣╝", "W": "═╠"},
 }
+
+
+CHARACTERS = " │┃║─━═┌┐└┘┏┓┗┛╔╗╚╝├┤┞┦┟┧┣┫┡┩┢┪╠╣▄▀◇◈▔░▒▓▚▞▕▏▭▯"
 
 
 def neighbors(text: str, pos: list[int]) -> dict[str, str]:
@@ -101,22 +107,28 @@ def valid(text: str) -> Optional[SyntaxError]:
             for direction, expected_neighbors in expected.items():
                 if neighbor[direction] not in expected_neighbors:
                     return SyntaxError(f"Discontinuous box at line {i}")
-    
+
     # check that no concurrent boxes exist
     for i, line in enumerate(lines):
         strip_c = re.sub(r"║.*║", "", line)
 
+        for j, char in enumerate(strip_c):
+            if char not in CHARACTERS:
+                return SyntaxError(f"Invalid character `{char}` at line {i}")
+
         if len(re.findall(r"[┌┐└┘┏┓┗┛╔╗╚╝]", strip_c)) not in (0, 2):
             return SyntaxError(f"Duplicate box at line {i}")
-        
+
         strip_w = re.sub(r"\s", "", strip_c)
 
         if re.match(r".*[┌┐┏┓╔╗]", strip_w):
             sides = re.split(r"[┌┏╔].*[┐┓╗]", strip_w)
 
-            if len(re.findall(r"[│┃║]", sides[0])) != len(re.findall(r"[│┃║]", sides[1])):
+            if len(re.findall(r"[│┃║]", sides[0])) != len(
+                re.findall(r"[│┃║]", sides[1])
+            ):
                 return SyntaxError(f"Duplicate box at line {i}")
-        
+
         sides = [walls for walls in re.split(r"[^│┃║]+", strip_w) if walls]
 
         if sides:
@@ -125,3 +137,39 @@ def valid(text: str) -> Optional[SyntaxError]:
                     return SyntaxError(f"Unmatched wall at line {i}")
             elif sides[0] != sides[1][::-1]:
                 return SyntaxError(f"Unmatched wall at line {i}")
+
+if __name__ == "__main__":
+    # testing this, remove before finished
+    s = """
+    ╔═══════════════════╗
+    ║ output 0123456789 ║
+    ╚═══════════════════╝
+
+    ┏━━━━━━━━━━━━━━━━┓
+    ┃◇▀▄▒▀▀▄▀▄       ┃
+    ┡━━━━━━━━━━━━━━━━┩
+    │◇▀▀◈◇▀▄▒▀▀▀▄▄▄▄ │
+    │◇▀▀▄◈◇▀▄░▀▀▀▄▄▄▄│
+    │┏━━━━━━━━━━━━━┓ │
+    │┃◇▀▀▄         ┃ │
+    │┡━━━━━━━━━━━━━┩ │
+    ││◇▀▀▀◈◇▀▀▄▚▀▀ │ │
+    ││◇▀▀▄◈◇▀▀░◇▀▀▀│ │
+    ││◇▀▀◈◇▀▀▒◇▀▀▀ │ │
+    │└─────────────┘ │
+    │▭◇▀▀            │
+    ├────────────────┤
+    │◇▀▀◈◇▀▄░▀▀      │
+    │◇▀▄◈◇▀▄▒▀▀      │
+    │┏━━━━━━━━━━━━┓  │
+    │┃◇▀▀         ┃  │
+    │┡━━━━━━━━━━━━┩  │
+    ││◇▀▀▄◈◇▀▀▚▀▀ │  │
+    ││◇▀▀◈◇▀▄░◇▀▀▄│  │
+    ││◇▀▄◈◇▀▄▒◇▀▀▄│  │
+    │└────────────┘  │
+    └────────────────┘
+    """
+
+    if valid(s):
+        raise valid(s)
