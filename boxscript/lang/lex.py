@@ -37,6 +37,7 @@ class Token:
         attr1 (Atom): The type of token
         attr2 (Any, optional): The value of the token—only exists for NUM tokens
     """
+
     def __init__(self, type: Atom, value: Any = None):
         """Creates a BoxScript token.
 
