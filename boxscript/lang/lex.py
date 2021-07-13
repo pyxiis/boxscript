@@ -1,4 +1,5 @@
 from enum import Enum
+import functools
 import re
 from typing import Any
 
@@ -30,21 +31,46 @@ Atom = Enum(
 
 
 class Token:
+    """A BoxScript Token
+
+    Attributes:
+        attr1 (Atom): The type of token
+        attr2 (Any, optional): The value of the token—only exists for NUM tokens
+    """
     def __init__(self, type: Atom, value: Any = None):
+        """Creates a BoxScript token.
+
+        Args:
+            type (Atom): The type of token
+            value (Any, optional):  The value of the token—only exists for NUM tokens.
+                Defaults to None.
+        """
         self.type = type
         self.value = value
 
     def __str__(self) -> str:
+        """Returns a string representation of the token
+
+        Returns:
+            str: The token's string representation
+        """
         if self.value:
             return f"{self.type.name}: {self.value}"
         return f"{self.type.name}"
 
 
-def tokenize(code):
+def tokenize(code: str) -> list[Token]:
+    """Creates a list of tokens from BS code
+
+    Args:
+        code (str): The input code
+
+    Returns:
+        list[Token]: The list of BS tokens
+    """
     tokens = []
 
-    def match(regex):
-        return re.match(regex, code)
+    match = functools.partial(re.match, string=code)
 
     while code:
         if m := match(r"[▄▀]+"):
