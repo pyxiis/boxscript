@@ -2,7 +2,6 @@ import copy
 import re
 from typing import Optional
 
-
 __all__ = ["valid"]
 
 
@@ -137,6 +136,7 @@ def valid(text: str) -> Optional[SyntaxError]:
                     return SyntaxError(f"Unmatched wall at line {i}")
             elif sides[0] != sides[1][::-1]:
                 return SyntaxError(f"Unmatched wall at line {i}")
+
 
 if __name__ == "__main__":
     # testing this, remove before finished
