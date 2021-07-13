@@ -33,7 +33,7 @@ class Token:
     def __init__(self, type: Atom, value: Any = None):
         self.type = type
         self.value = value
-    
+
     def __str__(self) -> str:
         if self.value:
             return f"{self.type.name}: {self.value}"
@@ -43,7 +43,8 @@ class Token:
 def tokenize(code):
     tokens = []
 
-    match = lambda regex: re.match(regex, code)
+    def match(regex):
+        return re.match(regex, code)
 
     while code:
         if m := match(r"[▄▀]+"):
@@ -74,24 +75,24 @@ def tokenize(code):
                         tokens.append(Token(Atom.EXEC_START))
                     else:
                         tokens.append(Token(Atom.IF_START))
-                
+
                 elif code[0] in "├┞┟┣┢┡":
                     if code[0] in "├┟┢":
                         tokens.append(Token(Atom.EXEC_END))
                     else:
                         tokens.append(Token(Atom.IF_END))
-                    
+
                     if code[0] in "├┞┡":
                         tokens.append(Token(Atom.EXEC_START))
                     else:
                         tokens.append(Token(Atom.IF_START))
-                
+
                 else:
                     if code[0] == "└":
                         tokens.append(Token(Atom.EXEC_END))
                     else:
                         tokens.append(Token(Atom.IF_END))
-                    
+
                     tokens.append(Token(Atom.BOX_END))
 
             else:
@@ -113,7 +114,7 @@ def tokenize(code):
 
                 if code[0] in singles:
                     tokens.append(Token(singles[code[0]]))
-            
+
             code = code[1:]
-    
+
     return tokens
