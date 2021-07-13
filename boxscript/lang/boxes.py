@@ -111,7 +111,6 @@ def valid(text: str) -> Optional[SyntaxError]:
         
         strip_w = re.sub(r"\s", "", strip_c)
 
-        print(strip_w)
         if re.match(r".*[┌┐┏┓╔╗]", strip_w):
             sides = re.split(r"[┌┏╔].*[┐┓╗]", strip_w)
 
