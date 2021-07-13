@@ -1,3 +1,11 @@
+import copy
+import re
+from typing import Optional
+
+
+__all__ = ["valid"]
+
+
 ADJACENT = {
     "│": {"N": "│├┤┌┐┞┦┡┩", "S": "│├┤└┘┟┧┢┪"},
     "┃": {"N": "┃┣┫┏┓┟┧┢┪", "S": "┃┣┫┗┛┞┦┡┩"},
@@ -69,19 +77,19 @@ def neighbors(text: str, pos: list[int]) -> dict[str, str]:
     return near
 
 
-def valid(text: str) -> tuple[bool, int, int]:
+def valid(text: str) -> Optional[SyntaxError]:
     """Checks whether the code only contains valid boxes
 
     Args:
-        text (str): The text to check
+        text (str): The code to check
 
     Returns:
-        tuple[bool, int, int]: Whether the text is valid, and where the first found error is if it exists
+        Optional[SyntaxError]: The syntax error, if any.
     """
-    for i, line in enumerate(text.splitlines()):
-        # TODO: check extraneous characters
+    lines = text.splitlines()
 
-        # check continuity
+    # check continuity
+    for i, line in enumerate(lines):
         for j, char in enumerate(line):
             if "║" in line[:j] and "║" in line[-~j:]:
                 continue
@@ -92,6 +100,29 @@ def valid(text: str) -> tuple[bool, int, int]:
 
             for direction, expected_neighbors in expected.items():
                 if neighbor[direction] not in expected_neighbors:
-                    return False, i, j
+                    return SyntaxError(f"Discontinuous box at line {i}")
+    
+    # check that no concurrent boxes exist
+    for i, line in enumerate(lines):
+        strip_c = re.sub(r"║.*║", "", line)
 
-    return True, -1, -1
+        if len(re.findall(r"[┌┐└┘┏┓┗┛╔╗╚╝]", strip_c)) not in (0, 2):
+            return SyntaxError(f"Duplicate box at line {i}")
+        
+        strip_w = re.sub(r"\s", "", strip_c)
+
+        print(strip_w)
+        if re.match(r".*[┌┐┏┓╔╗]", strip_w):
+            sides = re.split(r"[┌┏╔].*[┐┓╗]", strip_w)
+
+            if len(re.findall(r"[│┃║]", sides[0])) != len(re.findall(r"[│┃║]", sides[1])):
+                return SyntaxError(f"Duplicate box at line {i}")
+        
+        sides = [walls for walls in re.split(r"[^│┃║]+", strip_w) if walls]
+
+        if sides:
+            if len(sides) == 1:
+                if sides != sides[::-1]:
+                    return SyntaxError(f"Unmatched wall at line {i}")
+            elif sides[0] != sides[1][::-1]:
+                return SyntaxError(f"Unmatched wall at line {i}")
