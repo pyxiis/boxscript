@@ -1,4 +1,3 @@
-import copy
 import re
 from typing import Optional
 
@@ -136,40 +135,3 @@ def valid(text: str) -> Optional[SyntaxError]:
                     return SyntaxError(f"Unmatched wall at line {i}")
             elif sides[0] != sides[1][::-1]:
                 return SyntaxError(f"Unmatched wall at line {i}")
-
-
-if __name__ == "__main__":
-    # testing this, remove before finished
-    s = """
-    ╔═══════════════════╗
-    ║ output 0123456789 ║
-    ╚═══════════════════╝
-
-    ┏━━━━━━━━━━━━━━━━┓
-    ┃◇▀▄▒▀▀▄▀▄       ┃
-    ┡━━━━━━━━━━━━━━━━┩
-    │◇▀▀◈◇▀▄▒▀▀▀▄▄▄▄ │
-    │◇▀▀▄◈◇▀▄░▀▀▀▄▄▄▄│
-    │┏━━━━━━━━━━━━━┓ │
-    │┃◇▀▀▄         ┃ │
-    │┡━━━━━━━━━━━━━┩ │
-    ││◇▀▀▀◈◇▀▀▄▚▀▀ │ │
-    ││◇▀▀▄◈◇▀▀░◇▀▀▀│ │
-    ││◇▀▀◈◇▀▀▒◇▀▀▀ │ │
-    │└─────────────┘ │
-    │▭◇▀▀            │
-    ├────────────────┤
-    │◇▀▀◈◇▀▄░▀▀      │
-    │◇▀▄◈◇▀▄▒▀▀      │
-    │┏━━━━━━━━━━━━┓  │
-    │┃◇▀▀         ┃  │
-    │┡━━━━━━━━━━━━┩  │
-    ││◇▀▀▄◈◇▀▀▚▀▀ │  │
-    ││◇▀▀◈◇▀▄░◇▀▀▄│  │
-    ││◇▀▄◈◇▀▄▒◇▀▀▄│  │
-    │└────────────┘  │
-    └────────────────┘
-    """
-
-    if valid(s):
-        raise valid(s)
