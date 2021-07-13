@@ -106,19 +106,23 @@ def valid(text: str) -> Optional[SyntaxError]:
                 if neighbor[direction] not in expected_neighbors:
                     return SyntaxError(f"Discontinuous box at line {i}")
 
-    # check that no concurrent boxes exist
     for i, line in enumerate(lines):
+        # remove comments
         strip_c = re.sub(r"║.*║", "", line)
 
+        # check for invalid characters
         for j, char in enumerate(strip_c):
             if char not in CHARACTERS:
                 return SyntaxError(f"Invalid character `{char}` at line {i}")
 
+        # check for duplicate boxes
         if len(re.findall(r"[┌┐└┘┏┓┗┛╔╗╚╝]", strip_c)) not in (0, 2):
             return SyntaxError(f"Duplicate box at line {i}")
 
+        # remove whitespace
         strip_w = re.sub(r"\s", "", strip_c)
 
+        # check for duplicate/malformed boxes
         if re.match(r".*[┌┐┏┓╔╗]", strip_w):
             sides = re.split(r"[┌┏╔].*[┐┓╗]", strip_w)
 
@@ -127,11 +131,12 @@ def valid(text: str) -> Optional[SyntaxError]:
             ):
                 return SyntaxError(f"Duplicate box at line {i}")
 
+        # check for unmatched walls
         sides = [walls for walls in re.split(r"[^│┃║]+", strip_w) if walls]
 
         if sides:
             if len(sides) == 1:
-                if sides != sides[::-1]:
+                if sides[0] != sides[0][::-1]:
                     return SyntaxError(f"Unmatched wall at line {i}")
             elif sides[0] != sides[1][::-1]:
                 return SyntaxError(f"Unmatched wall at line {i}")
