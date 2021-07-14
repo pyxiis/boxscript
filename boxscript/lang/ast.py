@@ -2,9 +2,10 @@ class Container:
     def __init__(self):
         self.children = []
         self.closed = False
-    
+
     def execute(self):
         raise NotImplementedError
+
 
 class Block(Container):
     def execute(self):
@@ -12,11 +13,14 @@ class Block(Container):
             r = child.execute()
         return r
 
+
 class IfBlock(Block):
     pass
 
+
 class ExecBlock(Block):
     pass
+
 
 class Box(Container):
     def execute(self):
@@ -30,4 +34,3 @@ class Box(Container):
         else:
             for child in self.children:
                 child.execute()
-            
