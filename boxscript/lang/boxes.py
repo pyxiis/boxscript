@@ -1,3 +1,14 @@
+"""Validate an input string.
+
+This module provides the necessary functions to validate boxes in BoxScript code.
+
+Note:
+    The validation here passing does not necessarily mean that the syntax is correct.
+    Much of the checking will be done when actually executing the code. Furthermore, the
+    interpreter will actually ignore many of the errors (e.g. not enough inputs to a
+    binary operation) and will execute the code regardless.
+"""
+
 import re
 from typing import Optional
 

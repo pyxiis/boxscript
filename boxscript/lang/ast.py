@@ -1,3 +1,11 @@
+"""Parse a tokenization.
+
+This module provides the necessary functions to construct the AST for BoxScript.
+
+Todo:
+    * Actually parse out a line of code into a tree using the Line class.
+"""
+
 from lang.lex import Atom, Node, Token
 
 
@@ -71,9 +79,6 @@ class Line(Container):
     Note:
         A line cannot contain any other Containers. A line is the most primitive
         "chunk" of code.
-
-    Todo:
-        * Actually parse out a line of code into a tree.
     """
 
     def execute(self) -> int:

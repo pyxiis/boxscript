@@ -1,6 +1,22 @@
+"""Tokenize an input string.
+
+This module provides the necessary classes and functions to tokenize BoxScript code.
+
+Note:
+    The tokenization done in this module is not designed to support syntax
+    highlighting. Many parts of the code (e.g. comments) are simply ignored, rather than
+    tokenized as a comment. It is impossible to reconstitute the original code from the
+    tokenization.
+
+    Syntax highlighting should be done using regex.
+"""
+
 from enum import Enum
 import functools
 import re
+
+__all__ = ["Atom", "Node", "Token", "tokenize"]
+
 
 Atom = Enum(
     "Atom",
