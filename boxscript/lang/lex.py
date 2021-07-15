@@ -71,9 +71,9 @@ def tokenize(code: str) -> list[Token]:
     """
     tokens = []
 
-    match = functools.partial(re.match, string=code)
-
     while code:
+        match = functools.partial(re.match, string=code)
+
         if m := match(r"[▄▀]+"):
             if len(m.group()) > 1:
                 value = (

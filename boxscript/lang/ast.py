@@ -25,11 +25,11 @@ class ExecBlock(Block):
 
 class Box(Container):
     def execute(self):
-        conditional = any(child.isinstance(IfBlock) for child in self.children)
+        conditional = any(isinstance(child, IfBlock) for child in self.children)
         if conditional:
             for child in self.children:
                 value = child.execute()
-                if child.isinstance(IfBlock) and not value:
+                if isinstance(child, IfBlock) and not value:
                     return
             self.execute()
         else:
@@ -49,19 +49,26 @@ class Script(Container):
         box_stack = [Container()]
         
         for child in children:
-
             if child.type in [Atom.BOX_START, Atom.EXEC_START, Atom.IF_START]:
                 if child.type is Atom.BOX_START:
                     b = Box()
+                    box_stack.pop() # remove newline from the stack
                 elif child.type is Atom.EXEC_START:
                     b = ExecBlock()
-                else:
+                elif child.type is Atom.IF_START:
                     b = IfBlock()
                 box_stack[-1].children.append(b)
                 box_stack.append(box_stack[-1].children[-1])
             elif child.type in [Atom.BOX_END, Atom.EXEC_END, Atom.IF_END]:
+                if child.type in [Atom.EXEC_END, Atom.IF_END]:
+                    box_stack.pop() # remove newline from stack
                 box_stack.pop()
+            elif child.type is Atom.NEWLINE:
+                if isinstance(box_stack[-1], Line):
+                    box_stack.pop()
+                box_stack[-1].children.append(Line())
+                box_stack.append(box_stack[-1].children[-1])
             else:
                 box_stack[-1].children.append(child)
 
-        self.children = box_stack[0].children
+        self.children = [child for child in box_stack[0].children if not isinstance(child, Line)]
