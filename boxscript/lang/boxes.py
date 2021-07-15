@@ -6,6 +6,7 @@ Attributes:
     ADJACENT (dict[str, dict[str, str]]): A dictionary of borders and their allowed
         neighbors, organized by relative cardinal location.
     CHARACTERS (str): The set of valid characters in BoxScript code outside of comments.
+    BORDERS (str): The set of valid border characters in BoxScript code.
 
 Note:
     The validation here passing does not necessarily mean that the syntax is correct.
@@ -57,6 +58,7 @@ ADJACENT = {
 
 
 CHARACTERS = " │┃║─━═┌┐└┘┏┓┗┛╔╗╚╝├┤┞┦┟┧┣┫┡┩┢┪╠╣▄▀◇◈▔░▒▓▚▞▕▏▭▯"
+BORDERS = "┛┣─├┌│┤┡┏┧┪┟┞━┓┐┢└┦┩┗┫┃┘╔╗╚╝║╠═╣"
 
 
 def _neighbors(text: str, pos: list[int]) -> dict[str, str]:
@@ -109,7 +111,7 @@ def valid(text: str) -> Optional[SyntaxError]:
             if "║" in line[:j] and "║" in line[-~j:]:
                 continue
 
-            expected = ADJACENT.get(char, dict())
+            expected = ADJACENT.get(char, {})
 
             neighbor = _neighbors(text, (i, j))
 
@@ -148,8 +150,8 @@ def valid(text: str) -> Optional[SyntaxError]:
         # check that no code is outside of a box
         strip_w = re.sub(r"[╔╚║╠].*[╗╝║╣]", "", strip_w)
 
-        statements = re.findall(r"[^┛┣─├┌│┤┡┏┧┪┟┞━┓┐┢└┦┩┗┫┃┘╔╗╚╝║╠═╣]+", strip_w)
-        borders = re.findall(r"[┛┣─├┌│┤┡┏┧┪┟┞━┓┐┢└┦┩┗┫┃┘╔╗╚╝║╠═╣]", strip_w)
+        statements = re.findall(fr"[^{BORDERS}]+", strip_w)
+        borders = re.findall(fr"[{BORDERS}]", strip_w)
 
         if strip_w and not borders:
             print(strip_w)
