@@ -20,7 +20,9 @@ class Container(Node):
         Args:
             children (list, optional): The children of the Container. Defaults to None.
         """
-        self.children = children or []
+        if children is None:
+            children = []
+        self.children = children
 
     def execute(self) -> int:
         """Executes all children.
@@ -113,7 +115,8 @@ class Script(Container):
             children (list[Token], optional): All tokens belonging to a script. Defaults
                 to None.
         """
-        children = children or []
+        if children is None:
+            children = []
 
         super().__init__()
         box_stack = [Container()]
