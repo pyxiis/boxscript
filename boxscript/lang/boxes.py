@@ -2,6 +2,11 @@
 
 This module provides the necessary functions to validate boxes in BoxScript code.
 
+Attributes:
+    ADJACENT (dict[str, dict[str, str]]): A dictionary of borders and their allowed
+        neighbors, organized by relative cardinal location.
+    CHARACTERS (str): The set of valid characters in BoxScript code outside of comments.
+
 Note:
     The validation here passing does not necessarily mean that the syntax is correct.
     Much of the checking will be done when actually executing the code. Furthermore, the
