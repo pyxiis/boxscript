@@ -1,5 +1,6 @@
 from lang.lex import Atom, Token
 
+
 class Container:
     def __init__(self, children: list = None):
         self.children = children or []
@@ -36,23 +37,24 @@ class Box(Container):
             for child in self.children:
                 child.execute()
 
+
 class Line(Container):
     def execute(self):
         # we only execute the first child, because each line should only contain 1 child
         # all other tokens should be grandchildren
-        return self.children[0].execute()        
+        return self.children[0].execute()
 
 
 class Script(Container):
     def __init__(self, children: list = []):
         super().__init__()
         box_stack = [Container()]
-        
+
         for child in children:
             if child.type in [Atom.BOX_START, Atom.EXEC_START, Atom.IF_START]:
                 if child.type is Atom.BOX_START:
                     b = Box()
-                    box_stack.pop() # remove newline from the stack
+                    box_stack.pop()  # remove newline from the stack
                 elif child.type is Atom.EXEC_START:
                     b = ExecBlock()
                 elif child.type is Atom.IF_START:
@@ -61,7 +63,7 @@ class Script(Container):
                 box_stack.append(box_stack[-1].children[-1])
             elif child.type in [Atom.BOX_END, Atom.EXEC_END, Atom.IF_END]:
                 if child.type in [Atom.EXEC_END, Atom.IF_END]:
-                    box_stack.pop() # remove newline from stack
+                    box_stack.pop()  # remove newline from stack
                 box_stack.pop()
             elif child.type is Atom.NEWLINE:
                 if isinstance(box_stack[-1], Line):
@@ -71,4 +73,6 @@ class Script(Container):
             else:
                 box_stack[-1].children.append(child)
 
-        self.children = [child for child in box_stack[0].children if not isinstance(child, Line)]
+        self.children = [
+            child for child in box_stack[0].children if not isinstance(child, Line)
+        ]
