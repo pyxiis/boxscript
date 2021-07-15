@@ -1,7 +1,22 @@
+"""Tokenize an input string.
+
+This module provides the necessary classes and functions to tokenize BoxScript code.
+
+Note:
+    The tokenization done in this module is not designed to support syntax
+    highlighting. Many parts of the code (e.g. comments) are simply ignored, rather than
+    tokenized as a comment. It is impossible to reconstitute the original code from the
+    tokenization.
+
+    Syntax highlighting should be done using regex.
+"""
+
 from enum import Enum
 import functools
 import re
-from typing import Any
+
+__all__ = ["Atom", "Node", "Token", "tokenize"]
+
 
 Atom = Enum(
     "Atom",
@@ -30,50 +45,41 @@ Atom = Enum(
 )
 
 
-class Token:
-    """A BoxScript Token
+class Node:
+    """A node of BoxScript code. This class is used for type hints."""
 
-    Attributes:
-        attr1 (Atom): The type of token
-        attr2 (Any, optional): The value of the token—only exists for NUM tokens
-    """
 
-    def __init__(self, type: Atom, value: Any = None):
+class Token(Node):
+    """A BoxScript Token which represents a single "atom" of code."""
+
+    __slots__ = ["type", "value"]
+
+    def __init__(self, type: Atom, value: int = None):
         """Creates a BoxScript token.
 
         Args:
             type (Atom): The type of token
-            value (Any, optional):  The value of the token—only exists for NUM tokens.
+            value (int, optional):  The value of the token—only exists for NUM tokens.
                 Defaults to None.
         """
         self.type = type
         self.value = value
 
-    def __str__(self) -> str:
-        """Returns a string representation of the token
-
-        Returns:
-            str: The token's string representation
-        """
-        if self.value:
-            return f"{self.type.name}: {self.value}"
-        return f"{self.type.name}"
-
 
 def tokenize(code: str) -> list[Token]:
-    """Creates a list of tokens from BS code
+    """Creates a list of tokens from BS code.
 
     Args:
-        code (str): The input code
+        code (str): The input code.
 
     Returns:
-        list[Token]: The list of BS tokens
+        list[Token]: The list of BS tokens.
     """
     tokens = []
 
-    match = functools.partial(re.match, string=code)
-
     while code:
+        match = functools.partial(re.match, string=code)
+
         if m := match(r"[▄▀]+"):
             if len(m.group()) > 1:
                 value = (

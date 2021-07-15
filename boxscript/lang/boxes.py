@@ -1,3 +1,20 @@
+"""Validate an input string.
+
+This module provides the necessary functions to validate boxes in BoxScript code.
+
+Attributes:
+    ADJACENT (dict[str, dict[str, str]]): A dictionary of borders and their allowed
+        neighbors, organized by relative cardinal location.
+    CHARACTERS (str): The set of valid characters in BoxScript code outside of comments.
+    BORDERS (str): The set of valid border characters in BoxScript code.
+
+Note:
+    The validation here passing does not necessarily mean that the syntax is correct.
+    Much of the checking will be done when actually executing the code. Furthermore, the
+    interpreter will actually ignore many of the errors (e.g. not enough inputs to a
+    binary operation) and will execute the code regardless.
+"""
+
 import re
 from typing import Optional
 
@@ -41,9 +58,10 @@ ADJACENT = {
 
 
 CHARACTERS = " │┃║─━═┌┐└┘┏┓┗┛╔╗╚╝├┤┞┦┟┧┣┫┡┩┢┪╠╣▄▀◇◈▔░▒▓▚▞▕▏▭▯"
+BORDERS = "┛┣─├┌│┤┡┏┧┪┟┞━┓┐┢└┦┩┗┫┃┘╔╗╚╝║╠═╣"
 
 
-def neighbors(text: str, pos: list[int]) -> dict[str, str]:
+def _neighbors(text: str, pos: list[int]) -> dict[str, str]:
     """Finds the characters neighboring a position
 
     Args:
@@ -58,27 +76,20 @@ def neighbors(text: str, pos: list[int]) -> dict[str, str]:
     """
     r, c = pos
     chars = [[*line] for line in text.splitlines()]
-    near = {"N": "\0", "S": "\0", "E": "\0", "W": "\0"}
+    near = {}
 
-    try:
-        near["E"] = chars[r][c + 1]
-    except IndexError:
-        pass
+    find = {
+        "E": lambda: chars[r][c + 1],
+        "W": lambda: chars[r][c - 1],
+        "S": lambda: chars[r + 1][c],
+        "N": lambda: chars[r - 1][c],
+    }
 
-    try:
-        near["W"] = chars[r][c - 1]
-    except IndexError:
-        pass
-
-    try:
-        near["S"] = chars[r + 1][c]
-    except IndexError:
-        pass
-
-    try:
-        near["N"] = chars[r - 1][c]
-    except IndexError:
-        pass
+    for direction in find:
+        try:
+            near[direction] = find[direction]()
+        except IndexError:
+            near[direction] = "\0"
 
     return near
 
@@ -100,9 +111,9 @@ def valid(text: str) -> Optional[SyntaxError]:
             if "║" in line[:j] and "║" in line[-~j:]:
                 continue
 
-            expected = ADJACENT.get(char, dict())
+            expected = ADJACENT.get(char, {})
 
-            neighbor = neighbors(text, (i, j))
+            neighbor = _neighbors(text, (i, j))
 
             for direction, expected_neighbors in expected.items():
                 if neighbor[direction] not in expected_neighbors:
@@ -128,17 +139,32 @@ def valid(text: str) -> Optional[SyntaxError]:
         if re.match(r".*[┌┐┏┓╔╗]", strip_w):
             sides = re.split(r"[┌┏╔].*[┐┓╗]", strip_w)
 
-            if len(re.findall(r"[│┃║]", sides[0])) != len(
-                re.findall(r"[│┃║]", sides[1])
-            ):
+            if len(re.findall(r"[│┃]", sides[0])) != len(re.findall(r"[│┃]", sides[1])):
                 return SyntaxError(f"Duplicate box at line {i}")
 
         # check for unmatched walls
-        sides = [walls for walls in re.split(r"[^│┃║]+", strip_w) if walls]
+        sides = [walls for walls in re.split(r"[^│┃║]+", strip_w)] if strip_w else []
 
         if sides:
-            if len(sides) == 1:
-                if sides[0] != sides[0][::-1]:
-                    return SyntaxError(f"Unmatched wall at line {i}")
-            elif sides[0] != sides[1][::-1]:
+            if len(sides) != 2:
                 return SyntaxError(f"Unmatched wall at line {i}")
+
+            if sides[0] != sides[1][::-1]:
+                return SyntaxError(f"Unmatched wall at line {i}")
+
+        # check that no code is outside of a box
+        strip_w = re.sub(r"[╔╚║╠].*[╗╝║╣]", "", strip_w)
+
+        statements = re.findall(fr"[^{BORDERS}]+", strip_w)
+        borders = re.findall(fr"[{BORDERS}]", strip_w)
+
+        if strip_w and not borders:
+            print(strip_w)
+            return SyntaxError(f"Code outside of box at line {i}")
+
+        if any(char in strip_w for char in "┛┣─├┌┤┡┏┧┪┟┞━┓┐┢└┦┩┗┫┘"):
+            if len(statements) > 0:
+                return SyntaxError(f"Code outside of box at line {i}")
+        else:
+            if len(statements) > 1:
+                return SyntaxError(f"Code outside of box at line {i}")
