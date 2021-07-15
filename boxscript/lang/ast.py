@@ -82,7 +82,6 @@ class Line(Container):
         Returns:
             int: The outcome of the execution.
         """
-
         # tree code here
 
         if self.children:

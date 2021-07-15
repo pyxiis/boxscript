@@ -1,7 +1,6 @@
 from enum import Enum
 import functools
 import re
-from typing import Any
 
 Atom = Enum(
     "Atom",
