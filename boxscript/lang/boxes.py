@@ -124,16 +124,35 @@ def valid(text: str) -> Optional[SyntaxError]:
         if re.match(r".*[┌┐┏┓╔╗]", strip_w):
             sides = re.split(r"[┌┏╔].*[┐┓╗]", strip_w)
 
-            if len(re.findall(r"[│┃║]", sides[0])) != len(
-                re.findall(r"[│┃║]", sides[1])
+            if len(re.findall(r"[│┃]", sides[0])) != len(
+                re.findall(r"[│┃]", sides[1])
             ):
                 return SyntaxError(f"Duplicate box at line {i}")
 
-        sides = [walls for walls in re.split(r"[^│┃║]+", strip_w) if walls]
+        sides = [walls for walls in re.split(r"[^│┃║]+", strip_w)] if strip_w else []
 
         if sides:
-            if len(sides) == 1:
-                if sides != sides[::-1]:
-                    return SyntaxError(f"Unmatched wall at line {i}")
-            elif sides[0] != sides[1][::-1]:
+            if len(sides) != 2:
                 return SyntaxError(f"Unmatched wall at line {i}")
+            
+            if sides[0] != sides[1][::-1]:
+                return SyntaxError(f"Unmatched wall at line {i}")
+            
+
+        
+        # check that no code is outside of a box
+        strip_w = re.sub(r"[╔╚║╠].*[╗╝║╣]", "", strip_w)
+
+        statements = re.findall(r"[^┛┣─├┌│┤┡┏┧┪┟┞━┓┐┢└┦┩┗┫┃┘╔╗╚╝║╠═╣]+", strip_w)
+        borders = re.findall(r"[┛┣─├┌│┤┡┏┧┪┟┞━┓┐┢└┦┩┗┫┃┘╔╗╚╝║╠═╣]", strip_w)
+
+        if strip_w and not borders:
+            print(strip_w)
+            return SyntaxError(f"Code outside of box at line {i}")
+
+        if any(char in strip_w for char in "┛┣─├┌┤┡┏┧┪┟┞━┓┐┢└┦┩┗┫┘"):
+            if len(statements) > 0:
+                return SyntaxError(f"Code outside of box at line {i}")
+        else:
+            if len(statements) > 1:
+                return SyntaxError(f"Code outside of box at line {i}")
