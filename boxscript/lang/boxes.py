@@ -59,7 +59,7 @@ ADJACENT = {
 CHARACTERS = " │┃║─━═┌┐└┘┏┓┗┛╔╗╚╝├┤┞┦┟┧┣┫┡┩┢┪╠╣▄▀◇◈▔░▒▓▚▞▕▏▭▯"
 
 
-def neighbors(text: str, pos: list[int]) -> dict[str, str]:
+def _neighbors(text: str, pos: list[int]) -> dict[str, str]:
     """Finds the characters neighboring a position
 
     Args:
@@ -74,27 +74,20 @@ def neighbors(text: str, pos: list[int]) -> dict[str, str]:
     """
     r, c = pos
     chars = [[*line] for line in text.splitlines()]
-    near = {"N": "\0", "S": "\0", "E": "\0", "W": "\0"}
+    near = {}
 
-    try:
-        near["E"] = chars[r][c + 1]
-    except IndexError:
-        pass
+    find = {
+        "E": lambda: chars[r][c + 1],
+        "W": lambda: chars[r][c - 1],
+        "S": lambda: chars[r + 1][c],
+        "N": lambda: chars[r - 1][c],
+    }
 
-    try:
-        near["W"] = chars[r][c - 1]
-    except IndexError:
-        pass
-
-    try:
-        near["S"] = chars[r + 1][c]
-    except IndexError:
-        pass
-
-    try:
-        near["N"] = chars[r - 1][c]
-    except IndexError:
-        pass
+    for direction in find:
+        try:
+            near[direction] = find[direction]()
+        except IndexError:
+            near[direction] = "\0"
 
     return near
 
@@ -118,7 +111,7 @@ def valid(text: str) -> Optional[SyntaxError]:
 
             expected = ADJACENT.get(char, dict())
 
-            neighbor = neighbors(text, (i, j))
+            neighbor = _neighbors(text, (i, j))
 
             for direction, expected_neighbors in expected.items():
                 if neighbor[direction] not in expected_neighbors:
