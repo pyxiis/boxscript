@@ -10,8 +10,6 @@ BoxScript's most defining feature is encouraging **thinking inside the box** whe
 
 ## Installation
 
----
-
 1. Clone the repository
 
 ```sh
@@ -25,8 +23,6 @@ pip install -r requirements.txt
 ```
 
 ## Contributors
-
----
 
 * [エニラ#0013](https://github.com/pyxiis): Programmer
 * [A Real Username#8028](https://github.com/onerandomusername): Debugger
