@@ -338,7 +338,7 @@ class Line(Container):
             r = 0
 
         if self.output:
-            print(f"output: {chr(r)}")
+            print(end=chr(r))
 
         # x = str(Memory)
         # if len(x) < 100:

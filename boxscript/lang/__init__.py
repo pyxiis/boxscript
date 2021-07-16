@@ -14,3 +14,4 @@ class Interpreter:
     def run(self):
         if not isinstance(valid(self.script), SyntaxError):
             Script(tokenize(self.script)).execute()
+            print()
