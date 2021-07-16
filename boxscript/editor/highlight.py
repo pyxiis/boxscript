@@ -1,76 +1,26 @@
-from rich.console import Console
-from rich.highlighter import RegexHighlighter
-from rich.panel import Panel
-from rich.style import Style
-from rich.text import Text
-from rich.theme import Theme
+from pygments.lexer import RegexLexer
+from pygments.token import Literal, Token
 
 
-class BoxScriptHighlighter(RegexHighlighter):
-    """Highlighter for BS syntax"""
+class BSLexer(RegexLexer):
+    """A Pygments lexer for BoxScript."""
 
-    base_style = "token."
-    highlights = [
-        r"(?P<border>[─━│┃┌┍┎┏┐┑┒┓└┗┘┛├┞┟┡┢┣┤┦┧┩┪┫])",
-        r"(?P<op>[▨▧▤▥▔░▒▓▚▞▦▩◈])",
-        r"(?P<number>[▄▀▣]*)",
-        r"(?P<memory>◇[▄▀▣]*)",
-        r"(?P<io>[▭▯])",
-        r"(?P<paren>[▕▏])",
-        r"(?P<comment>║[^\n]*║|[╔╚]═*[╗╝])",
-    ]
+    name = 'BS'
+    aliases = ['box', 'bs', 'boxscript']
+    filenames = ['*.bs']
 
+    tokens = {
+        'root': [
+            (r'[─━│┃┌┍┎┏┐┑┒┓└┗┘┛├┞┟┡┢┣┤┦┧┩┪┫]', Token.Text),
+            (r'[▔░▒▓▚▞◈]', Token.Operator),
+            (r'◇[▄▀]*|[▄▀]+(?=◈)', Literal.String),
+            (r'[▄▀]+', Literal.Number),
+            (r'[▭▯]', Token.Keyword),
+            (r'[▕▏]', Token.Punctuation),
+            (r'║[^\n]*║|[╔╚]═*[╗╝]', Token.Comment),
+            (r'\s', Token.Text.Whitespace),
+            (r'.', Token.Generic)
+        ]
+    }
 
-if __name__ == "__main__":
-    # please customize this!
-    theme = Theme(
-        {
-            "token.border": "#ffffff",
-            "token.op": "#edb9b6",
-            "token.number": "#d5b6ed",
-            "token.memory": "#b6edb9",
-            "token.io": "#b6eaed",
-            "token.paren": "#b9b6ed",
-            "token.comment": "#18191c",
-        }
-    )
-    t = Text(
-        """
-╔═══════════════════════╗
-║This code does nothing ║
-╚═══════════════════════╝
-┏━━━━━━━━━━━━━━━━┓
-┃◇▀▄▒▀▀▄▀▄       ┃
-┡━━━━━━━━━━━━━━━━┩
-│◇▀▀◈◇▀▄▒▀▀▀▄▄▄▄ │
-│◇▀▀▄◈◇▀▄░▀▀▀▄▄▄▄│
-│┏━━━━━━━━━━━━━┓ │
-│┃◇▀▀▄         ┃ │
-│┡━━━━━━━━━━━━━┩ │
-││◇▀▀▀◈◇▀▀▄▚▀▀ │ │
-││◇▀▀▄◈◇▀▀░◇▀▀▀│ │
-││◇▀▀◈◇▀▀▒◇▀▀▀ │ │
-│└─────────────┘ │
-│╔═════════════╗ │
-│║Test [orange]║ │
-│╚═════════════╝ │
-│▭◇▀▀            │
-├────────────────┤
-│◇▀▀◈◇▀▄░▀▀      │
-│◇▀▄◈◇▀▄▒▀▀      │
-│┏━━━━━━━━━━━━┓  │
-│┃◇▀▀         ┃  │
-│┡━━━━━━━━━━━━┩  │
-││◇▀▀▄◈◇▀▀▚▀▀ │  │
-││◇▀▀◈◇▀▄░◇▀▀▄│  │
-││◇▀▄◈◇▀▄▒◇▀▀▄│  │
-│└────────────┘  │
-└────────────────┘
-    """
-    )
-
-    BoxScriptHighlighter().highlight(t)
-
-    Console(theme=theme).print(
-        Panel(t, highlight=True, title="test.bs", style=Style(bgcolor="#36393f"))
-    )
+# pygments.highlight(t, BSLexer(), Terminal256Formatter(linenos=True))
