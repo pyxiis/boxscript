@@ -48,6 +48,17 @@ Atom = Enum(
 class Node:
     """A node of BoxScript code. This class is used for type hints."""
 
+    def execute(self) -> int:
+        """Executes all children.
+
+        Raises:
+            NotImplementedError: This function is not modified in subclass.
+
+        Returns:
+            int: The outcome of the execution.
+        """
+        raise NotImplementedError
+
 
 class Token(Node):
     """A BoxScript Token which represents a single "atom" of code."""
@@ -64,6 +75,10 @@ class Token(Node):
         """
         self.type = type
         self.value = value
+    
+    def execute(self):
+        # print(self.type)
+        pass
 
 
 def tokenize(code: str) -> list[Token]:
