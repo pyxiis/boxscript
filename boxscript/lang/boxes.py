@@ -121,7 +121,9 @@ def valid(text: str) -> Optional[SyntaxError]:
 
     for i, line in enumerate(lines):
         # remove comments
-        strip_c = re.sub(r"║.*║", "", line)
+        strip_c = line
+        for comment in re.findall(r"║.*║", line):
+            strip_c = strip_c.replace(comment, " " * len(comment))
 
         # check for invalid characters
         for j, char in enumerate(strip_c):
@@ -147,9 +149,10 @@ def valid(text: str) -> Optional[SyntaxError]:
 
         if sides:
             if len(sides) != 2:
-                return SyntaxError(f"Unmatched wall at line {i}")
+                if sides[0] != sides[0][::-1]:
+                    return SyntaxError(f"Unmatched wall at line {i}")
 
-            if sides[0] != sides[1][::-1]:
+            elif sides[0] != sides[1][::-1]:
                 return SyntaxError(f"Unmatched wall at line {i}")
 
         # check that no code is outside of a box

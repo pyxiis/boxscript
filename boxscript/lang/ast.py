@@ -10,8 +10,6 @@ from typing import Optional
 from lang.lex import Atom, Node, Token
 
 Memory = collections.defaultdict(lambda: 0)
-STDOut = ""
-c = 0
 
 
 def shunting_yard(tokens: list[Token]) -> list[Token]:
