@@ -60,7 +60,7 @@ Numbers are the only form of data in BS. The first digit is always the sign of t
 
 `◇` represents an array which can store an arbitrary number of numbers.
 Each cell can be accessed by its index, where the index is a number immediately postceding the `◇`. Hence, `◇▀▄` would represent the 0th cell.
-Each cell has a default value of 0.
+Each cell has a default value of `▀▄`.
 
 ## Operators
 
@@ -68,39 +68,69 @@ Unary operators are invoked in this form: `<operator> A`.
 
 Binary operators are invoked in this form: `A <operator> B`.
 
+Left associative operators are evaluated from left to right.
+
+Right associative operators are evaluated from right to left.
+
 Spaces are not necessary between terms.
 
 ### Comparison
 
-These operators do not exist. As booleans are represented by 0 or non-0, this is possible using only bitwise operators.
+All comparison operators are binary and left-associative.
+
+- `▨` represents less than.
+- `▧` represents greater than.
+- `▤` represents equal to.
+- `▥` represents not equal to.
+
+These operators return `▀▄` if false, and otherwise return `▀▀`.
 
 ### Assignment
 
-`◈` is the assignment operator. This is because `◈` "fills in" `◇`. It fills the preceding cell with the postceding value.
+`◈` is the assignment operator. This is because `◈` "fills in" `◇`. It fills the preceding cell with the postceding value. Note that the preceding cell should be a memory index.
+
+There may only be one assignment operation per line.
 
 ### Bitwise
 
 `▔` represents NOT. This is a unary operator.
 
-The following bitwise operators are all binary.
+The following bitwise operators are all binary and left-associative.
 
-`░` represents AND. `▒` represents XOR. `▓` represents OR. `▚` represents left shift. `▞` represents right shift.
+- `░` represents AND.
+- `▒` represents XOR.
+- `▓` represents OR.
+- `▚` represents left shift.
+- `▞` represents right shift.
 
 ### Arithmetic
 
-These operators do not exist. All operations are possible using only bitwise operators.
+All arithmetic operators are binary. The exponentiation operator is right-associative, but all other arithmetic operators are left-associative.
+
+- `▐` represents addition.
+- `▌` represents subtraction.
+- `▘` represents multiplication.
+- `▝` represents division.
+- `▗` represents modulo.
+- `▖` represents exponentiation.
+
+Do note that while floats cannot be stored, they are used when processing intermediate steps.
 
 ### Order of Operations
 
 The order of operations, from lowest to highest precedence, is:
 
 - Output/assignment
+- Less than, greater than, equal to, not equal to (`▨`, `▧`, `▤`, `▥`)
 - OR (`▓`)
 - XOR (`▒`)
 - AND (`░`)
-- Shifts (`▚`, `▞`)
+- Left shift, right shift (`▚`, `▞`)
+- Addition, subtraction (`▐`, `▌`)
+- Multiplication, division, modulo (`▘`, `▝`, `▗`)
 - Memory access
 - NOT (`▔`)
+- Exponentiation (`▖`)
 
 When there are 2 operations of the same precedence, they are done from left to right.
 
@@ -108,4 +138,4 @@ Should this order be undesireable, expressions put between `▕` and `▏` will 
 
 ## IO
 
-`▭` outputs the postceding value. `▯` represents input, and can be accessed similarly to `◇`.
+`▭` outputs the postceding value. There may only be one output operation per line.
