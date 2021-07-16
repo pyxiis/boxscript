@@ -9,10 +9,10 @@ from typing import Optional
 
 from lang.lex import Atom, Node, Token
 
-
 Memory = collections.defaultdict(lambda: 0)
 STDOut = ""
 c = 0
+
 
 def shunting_yard(tokens):
     output = []
@@ -22,8 +22,7 @@ def shunting_yard(tokens):
             output.append(token)
         elif token.type in [Atom.MEM, Atom.NOT]:
             while any(
-                op in map(lambda e: e.type, stack)
-                for op in [Atom.MEM, Atom.NOT]
+                op in map(lambda e: e.type, stack) for op in [Atom.MEM, Atom.NOT]
             ):
                 output.append(stack.pop())
             stack.append(token)
@@ -44,14 +43,29 @@ def shunting_yard(tokens):
         elif token.type is Atom.XOR:
             while any(
                 op in map(lambda e: e.type, stack)
-                for op in [Atom.XOR, Atom.AND, Atom.L_SHIFT, Atom.R_SHIFT, Atom.MEM, Atom.NOT]
+                for op in [
+                    Atom.XOR,
+                    Atom.AND,
+                    Atom.L_SHIFT,
+                    Atom.R_SHIFT,
+                    Atom.MEM,
+                    Atom.NOT,
+                ]
             ):
                 output.append(stack.pop())
             stack.append(token)
         elif token.type is Atom.OR:
             while any(
                 op in map(lambda e: e.type, stack)
-                for op in [Atom.OR, Atom.XOR, Atom.AND, Atom.L_SHIFT, Atom.R_SHIFT, Atom.MEM, Atom.NOT]
+                for op in [
+                    Atom.OR,
+                    Atom.XOR,
+                    Atom.AND,
+                    Atom.L_SHIFT,
+                    Atom.R_SHIFT,
+                    Atom.MEM,
+                    Atom.NOT,
+                ]
             ):
                 output.append(stack.pop())
             stack.append(token)
@@ -61,15 +75,16 @@ def shunting_yard(tokens):
             while stack[-1].type is not Atom.L_PAREN:
                 output.append(stack.pop())
             stack.pop()
-        
+
     while stack:
         output.append(stack.pop())
-    
+
     return output
 
 
 class Nil(Node):
     """A Node which does nothing."""
+
     def execute(self) -> int:
         """Returns 1.
 
@@ -108,6 +123,7 @@ class Container(Node):
 
 class Block(Container):
     """A class representing a "block" of code."""
+
     def execute(self) -> int:
         """Executes all children.
 
@@ -188,6 +204,7 @@ class Expression(Container):
 
         return stack.pop()
 
+
 class Line(Container):
     """A class for a line of code.
 
@@ -245,6 +262,7 @@ class Line(Container):
                     loc = self.children[0].execute()
                     Memory[loc] = value
                     return value
+
             assignment = Assign(children=[loc, value])
 
             self.children = [assignment]
@@ -253,9 +271,8 @@ class Line(Container):
             self.children = [value]
         else:
             self.children = [Nil()]
-        
+
         self.parsed = True
-        
 
     def valid(self) -> Optional[SyntaxError]:
         """Checks whether the line is valid.
@@ -296,7 +313,8 @@ class Line(Container):
         elif out_count == 1:
             if self.children[0].type is not Atom.OUTPUT:
                 return SyntaxError(
-                    f"Output operation must be at the beginning of line {self.line_number}"
+                    f"Output operation must be at the beginning of line "
+                    f"{self.line_number}"
                 )
 
     def execute(self) -> int:
@@ -309,7 +327,7 @@ class Line(Container):
             r = self.children[0].execute()
         else:
             r = 0
-        
+
         if self.output:
             print(f"output: {chr(r)}")
 

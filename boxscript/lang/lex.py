@@ -75,7 +75,7 @@ class Token(Node):
         """
         self.type = type
         self.value = value
-    
+
     def execute(self):
         # print(self.type)
         pass
