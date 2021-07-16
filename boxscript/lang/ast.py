@@ -281,7 +281,8 @@ class Expression(Container):
         """
         stack = [0]
         for child in self.children:
-            # keep in mind that the stack's order is reversed, so some operations must be done in reverse order
+            # keep in mind that the stack's order is reversed, so some operations must
+            # be done in reverse order
             if child.type is Atom.NUM:
                 stack.append(child.value)
             elif child.type is Atom.MEM:

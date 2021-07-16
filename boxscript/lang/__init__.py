@@ -4,14 +4,24 @@ from lang.lex import tokenize
 
 
 class Interpreter:
-    def __init__(self, script, inputs: dict[int, int] = None):
+    """The interface for running the code."""
+
+    def __init__(self, script: str, inputs: dict[int, int] = None):
+        """Creates an interpretation for a script with the specified inputs.
+
+        Args:
+            script ([type]): The script to run.
+            inputs (dict[int, int], optional): A mapping of inputs to use. Defaults to
+                None.
+        """
         self.script = script
         self.memory = Memory
         if inputs is not None:
             for i in inputs:
                 self.memory[i] = inputs[i]
 
-    def run(self):
+    def run(self) -> None:
+        """Runs the script."""
         if not isinstance(valid(self.script), SyntaxError):
             try:
                 Script(tokenize(self.script)).execute()
