@@ -7,7 +7,7 @@ import collections
 import itertools
 from typing import Optional
 
-from lang.lex import Atom, Node, Token
+from boxscript.lex import Atom, Node, Token
 
 Memory = collections.defaultdict(lambda: 0)
 STDOut = ""
@@ -340,7 +340,7 @@ class Line(Container):
             r = 0
 
         if self.output:
-            print(f"output: {chr(r)}")
+            print(chr(r))
 
         # x = str(Memory)
         # if len(x) < 100:
