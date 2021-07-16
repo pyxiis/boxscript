@@ -14,7 +14,19 @@ STDOut = ""
 c = 0
 
 
-def shunting_yard(tokens):
+def shunting_yard(tokens: list[Token]) -> list[Token]:
+    """Generates the RPN representation of the given list of Tokens.
+
+    This function should not be used with certain Tokens, such as list assignment or
+    output. These should be taken care of with special cases.
+
+    Args:
+        tokens (list[Token]): An input list of numerical Tokens.
+
+    Returns:
+        list[Token]: The Tokens in RPN order
+    """
+
     output = []
     stack = []
     for token in tokens:

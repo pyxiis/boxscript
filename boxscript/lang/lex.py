@@ -76,10 +76,6 @@ class Token(Node):
         self.type = type
         self.value = value
 
-    def execute(self):
-        # print(self.type)
-        pass
-
 
 def tokenize(code: str) -> list[Token]:
     """Creates a list of tokens from BS code.
