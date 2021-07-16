@@ -26,7 +26,6 @@ def shunting_yard(tokens: list[Token]) -> list[Token]:
     Returns:
         list[Token]: The Tokens in RPN order
     """
-
     output = []
     stack = []
     for token in tokens:
