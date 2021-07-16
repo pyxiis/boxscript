@@ -76,7 +76,7 @@ These operators do not exist. As booleans are represented by 0 or non-0, this is
 
 ### Assignment
 
-`◈` is the assignment operator. This is because `◈` "fills in" `◇`. It fills the preceding cell with the postceding value.
+`◈` is the assignment operator. This is because `◈` "fills in" `◇`. It fills the preceding cell with the postceding value. Note that the preceding cell should be a memory index.
 
 ### Bitwise
 
