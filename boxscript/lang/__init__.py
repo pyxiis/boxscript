@@ -13,5 +13,9 @@ class Interpreter:
 
     def run(self):
         if not isinstance(valid(self.script), SyntaxError):
-            Script(tokenize(self.script)).execute()
+            try:
+                Script(tokenize(self.script)).execute()
+            except ValueError:
+                # printing negatives can be used as quick exit
+                pass
             print()

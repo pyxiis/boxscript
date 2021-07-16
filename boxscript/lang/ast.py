@@ -34,15 +34,15 @@ def shunting_yard(tokens: list[Token]) -> list[Token]:
         elif token.type in [Atom.MEM, Atom.NOT]:
             while any(
                 op in map(lambda e: e.type, stack)
-                for op in [Atom.MEM, Atom.NOT, Atom.POW]
-            ):
+                for op in [Atom.MEM, Atom.NOT, Atom.POW, Atom.L_PAREN]
+            ) and stack[-1].type != Atom.L_PAREN:
                 output.append(stack.pop())
             stack.append(token)
         elif token.type in [Atom.MULT, Atom.DIV, Atom.MOD]:
             while any(
                 op in map(lambda e: e.type, stack)
                 for op in [Atom.MULT, Atom.DIV, Atom.MOD, Atom.MEM, Atom.NOT, Atom.POW]
-            ):
+            ) and stack[-1].type != Atom.L_PAREN:
                 output.append(stack.pop())
             stack.append(token)
         elif token.type in [Atom.ADD, Atom.SUB]:
@@ -58,7 +58,7 @@ def shunting_yard(tokens: list[Token]) -> list[Token]:
                     Atom.NOT,
                     Atom.POW,
                 ]
-            ):
+            ) and stack[-1].type != Atom.L_PAREN:
                 output.append(stack.pop())
             stack.append(token)
         elif token.type in [Atom.L_SHIFT, Atom.R_SHIFT]:
@@ -76,7 +76,7 @@ def shunting_yard(tokens: list[Token]) -> list[Token]:
                     Atom.NOT,
                     Atom.POW,
                 ]
-            ):
+            ) and stack[-1].type != Atom.L_PAREN:
                 output.append(stack.pop())
             stack.append(token)
         elif token.type is Atom.AND:
@@ -95,7 +95,7 @@ def shunting_yard(tokens: list[Token]) -> list[Token]:
                     Atom.NOT,
                     Atom.POW,
                 ]
-            ):
+            ) and stack[-1].type != Atom.L_PAREN:
                 output.append(stack.pop())
             stack.append(token)
         elif token.type is Atom.XOR:
@@ -115,7 +115,7 @@ def shunting_yard(tokens: list[Token]) -> list[Token]:
                     Atom.NOT,
                     Atom.POW,
                 ]
-            ):
+            ) and stack[-1].type != Atom.L_PAREN:
                 output.append(stack.pop())
             stack.append(token)
         elif token.type is Atom.OR:
@@ -136,7 +136,7 @@ def shunting_yard(tokens: list[Token]) -> list[Token]:
                     Atom.NOT,
                     Atom.POW,
                 ]
-            ):
+            ) and stack[-1].type != Atom.L_PAREN:
                 output.append(stack.pop())
             stack.append(token)
         elif token.type in [Atom.NE, Atom.EQ, Atom.LT, Atom.GT]:
@@ -161,7 +161,7 @@ def shunting_yard(tokens: list[Token]) -> list[Token]:
                     Atom.NOT,
                     Atom.POW,
                 ]
-            ):
+            ) and stack[-1].type != Atom.L_PAREN:
                 output.append(stack.pop())
             stack.append(token)
         elif token.type is Atom.L_PAREN:
@@ -280,7 +280,6 @@ class Expression(Container):
             int: The value of the expression.
         """
         stack = [0]
-
         for child in self.children:
             # keep in mind that the stack's order is reversed, so some operations must be done in reverse order
             if child.type is Atom.NUM:
@@ -315,6 +314,8 @@ class Expression(Container):
                 stack.append(stack.pop() | stack.pop())
             elif child.type is Atom.XOR:
                 stack.append(stack.pop() ^ stack.pop())
+            elif child.type is Atom.NOT:
+                stack.append(~stack.pop())
             elif child.type is Atom.LT:
                 stack.append(
                     int(stack.pop() > stack.pop())
