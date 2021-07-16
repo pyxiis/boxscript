@@ -301,7 +301,7 @@ class Expression(Container):
                 stack.append(stack.pop() * stack.pop())
             elif child.type is Atom.DIV:
                 a, b = stack.pop(), stack.pop()
-                stack.append(round(b / a))
+                stack.append(b / a)
             elif child.type is Atom.POW:
                 a, b = stack.pop(), stack.pop()
                 stack.append(b ** a)
@@ -387,7 +387,7 @@ class Line(Container):
                 def execute(self) -> int:
                     loc = self.children[0].execute()
                     value = self.children[1].execute()
-                    Memory[loc] = value
+                    Memory[loc] = round(value)
                     return value
 
             assignment = Assign(children=[loc, value])
@@ -456,7 +456,7 @@ class Line(Container):
             r = 0
 
         if self.output:
-            print(end=chr(r))
+            print(end=round(chr(r)))
 
         return r
 

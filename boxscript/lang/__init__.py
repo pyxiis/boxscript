@@ -15,7 +15,7 @@ class Interpreter:
         if not isinstance(valid(self.script), SyntaxError):
             try:
                 Script(tokenize(self.script)).execute()
-            except ValueError:
-                # printing negatives can be used as quick exit
+            except (ValueError, ZeroDivisionError):
+                # printing negatives can be used as quick exit, as can division by 0
                 pass
             print()
