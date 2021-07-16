@@ -7,7 +7,7 @@ import collections
 import itertools
 from typing import Optional
 
-from lang.lex import Atom, Node, Token
+from boxscript.lex import Atom, Node, Token
 
 Memory = collections.defaultdict(lambda: 0)
 
@@ -457,7 +457,7 @@ class Line(Container):
             r = 0
 
         if self.output:
-            print(end=round(chr(r)))
+            print(end=chr(round(r)))
 
         return r
 
