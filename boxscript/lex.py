@@ -11,9 +11,9 @@ Note:
     Syntax highlighting should be done using regex.
 """
 
-from enum import Enum
 import functools
 import re
+from enum import Enum
 
 from boxscript.boxes import valid
 
