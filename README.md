@@ -27,6 +27,25 @@ pip install -r requirements.txt
 * Python 3.9+
 * A font which supports [Block Elements](https://www.unicode.org/charts/PDF/U1FB00.pdf), [Box Drawing](https://www.unicode.org/charts/PDF/U2500.pdf), and [Geometric Shapes](https://unicode.org/charts/PDF/U25A0.pdf)
 
+## Running
+
+You can try running the editor through this command:
+
+```sh
+python -m editor
+```
+
+Admittedly, the editor is pretty low quality, but you can actually execute BoxScript code directly from a file!
+
+Put this file in the root directory, and run it—be sure to replace the file path with the path to your file.
+
+```py
+from boxscript.interpreter import Interpreter
+
+with open('docs/helloworld.bs') as bs:
+    Interpreter().run(bs.read())
+```
+
 ## Contributors
 
 * [エニラ#0013](https://github.com/pyxiis): Programmer
