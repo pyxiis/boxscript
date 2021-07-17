@@ -1,3 +1,5 @@
+import pygments
+from pygments.formatters import Terminal256Formatter
 from pygments.lexer import RegexLexer
 from pygments.token import Literal, Token
 
@@ -24,4 +26,4 @@ class BSLexer(RegexLexer):
     }
 
 
-# pygments.highlight(t, BSLexer(), Terminal256Formatter(linenos=True))
+pygments.highlight("owo", BSLexer(), Terminal256Formatter(linenos=True))

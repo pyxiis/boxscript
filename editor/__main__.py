@@ -8,6 +8,8 @@ from rich.style import Style
 from rich.text import Text
 from rich.theme import Theme
 
+from boxscript.interpreter import Interpreter
+
 co = Console()
 
 
@@ -92,14 +94,62 @@ if __name__ == "__main__":
 term = Terminal()
 
 dictofletters = {
-    "r": "▀",
-    "w": "◇",
-    "e": "◈",
-    "t": "▄",
-    "y": "▒",
-    "u": "░",
-    "i": "▭",
+    "q": "│",
+    "a": "┃",
+    "z": "║",
+    "w": "─",
+    "s": "━",
+    "x": "═",
+    "e": "┌",
+    "r": "┐",
+    "t": "└",
+    "y": "┘",
+    "d": "┏",
+    "f": "┓",
+    "g": "┗",
+    "h": "┛",
+    "c": "╔",
+    "v": "╗",
+    "b": "╚",
+    "n": "╝",
+    "1": "├",
+    "2": "┤",
+    "3": "┞",
+    "4": "┦",
+    "5": "┟",
+    "6": "┧",
+    "7": "┣",
+    "8": "┫",
+    "9": "┡",
+    "0": "┩",
+    "-": "┢",
+    "=": "┪",
+    "_": "╠",
+    "+": "╣",
+    "(": "▄",
+    ")": "▀",
+    "[": "◇",
+    "]": "◈",
+    "u": "▔",
+    "i": "░",
     "o": "▒",
+    "p": "▓",
+    "j": "▚",
+    "k": "▞",
+    "l": "▕",
+    ";": "▏",
+    "{": "▭",
+    "}": "▯",
+    "m": "▖",
+    ",": "▗",
+    ".": "▘",
+    "/": "▝",
+    "'": "▌",
+    '"': "▐",
+    "<": "▧",
+    ">": "▨",
+    "?": "▤",
+    "|": "▥",
 }
 
 
@@ -108,12 +158,12 @@ def main() -> None:
     row_length = 10
     max_row_length = math.floor(term.width / 2)
     print(f"{term.home}{term.white_on_black}{term.clear}")
-    print("press 'q' to quit.")
+    print("press '~' to quit.")
     with term.cbreak():  # While you are pressing buttons
         val = ""
         ll = ""
         # max_row_length = len(val)
-        while ll.lower() != "q":  # While the button is not q
+        while ll.lower() != "~":  # While the button is not ~
             ll = term.inkey()
 
             if val.count("\n") == 0:
@@ -144,7 +194,9 @@ def main() -> None:
                 )
             )
 
-        print(f"send help!{term.normal}")
+        print(f"{term.normal}")
+        print(val)
+        return val
 
 
-main()
+Interpreter().run(main())
