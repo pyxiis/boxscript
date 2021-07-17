@@ -3,8 +3,6 @@
 This module provides the necessary functions/classes to execute BoxScript.
 """
 
-from collections import defaultdict
-
 from boxscript.ast import Memory, Script
 from boxscript.boxes import valid
 from boxscript.lex import tokenize
@@ -28,12 +26,13 @@ class Interpreter:
             inputs (dict[int, int], optional): A mapping of inputs to use. Defaults to
                 None.
         """
+        global Memory
+        self.memory.reset()
         self.script = script
 
         if inputs is not None:
             for i in inputs:
                 self.memory[i] = inputs[i]
-
         box_error = valid(self.script)
         if not isinstance(box_error, SyntaxError):
             try:
@@ -50,5 +49,4 @@ class Interpreter:
         else:
             print(box_error)
 
-        self.memory = defaultdict(int)
         self.script = ""

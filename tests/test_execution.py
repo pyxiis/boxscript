@@ -31,15 +31,15 @@ class TestExecution(unittest.TestCase):
         s = dedent(s).strip()
         self.assertEqual(run_code(s), "0\n")
 
-    def test_01234567(self) -> None:
+    def test_01234567_bitwise(self) -> None:
         """Output: 01234567"""
         s = """
-            ╔═════════════════╗
-            ║ output 01234567 ║
-            ╚═════════════════╝
+            ╔═══════════════════╗
+            ║ output 0123456789 ║
+            ╚═══════════════════╝
 
             ┏━━━━━━━━━━━━━━━━┓
-            ┃◇▀▄▒▀▀▄▄▄       ┃
+            ┃◇▀▄▒▀▀▄▀▄       ┃
             ┡━━━━━━━━━━━━━━━━┩
             │▀▀◈◇▀▄▒▀▀▀▄▄▄▄  │
             │▀▀▄◈◇▀▄░▀▀▀▄▄▄▄ │
@@ -64,7 +64,21 @@ class TestExecution(unittest.TestCase):
             └────────────────┘
             """
         s = dedent(s).strip()
-        self.assertEqual(run_code(s), "01234567\n")
+        self.assertEqual(run_code(s), "0123456789\n")
+
+    def test_01234567(self) -> None:
+        """Output: 0123456789"""
+        s = """
+            ┏━━━━━━━━━━━━┓
+            ┃◇▀▄▨▀▀▄▀▄   ┃
+            ┡━━━━━━━━━━━━┩
+            │▭◇▀▄▐▀▀▀▄▄▄▄│
+            ├────────────┤
+            │▀▄◈◇▀▄▐▀▀   │
+            └────────────┘
+            """
+        s = dedent(s)
+        self.assertEqual(run_code(s), "0123456789\n")
 
     def test_invalid_code(self) -> None:
         """Provide invalid code"""

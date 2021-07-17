@@ -9,7 +9,40 @@ from typing import Generator, Optional
 
 from boxscript.lex import Atom, Node, Token
 
-Memory = collections.defaultdict(int)
+
+class Mem:
+    """A class to store the values in memory."""
+
+    def __init__(self):
+        """Initialize the memory."""
+        self.memory = collections.defaultdict(int)
+
+    def __getitem__(self, key: int) -> int:
+        """Get the value of the variable.
+
+        Args:
+            key (int): The key that is used to access the value.
+
+        Returns:
+            int: The value at the key. Defaults to 0.
+        """
+        return self.memory[key]
+
+    def __setitem__(self, key: int, value: int) -> None:
+        """Set the value of the variable.
+
+        Args:
+            key (int): The key that is used to set the value.
+            value (int): The value that is set at the key.
+        """
+        self.memory[key] = value
+
+    def reset(self) -> None:
+        """Reset the memory."""
+        self.memory = collections.defaultdict(int)
+
+
+Memory = Mem()
 
 
 def shunting_yard(tokens: list[Token]) -> list[Token]:
