@@ -3,17 +3,14 @@ import io
 from textwrap import dedent
 import unittest
 
-from boxscript.ast import Script
-from boxscript.lex import tokenize
+from boxscript.interpreter import Interpreter
 
 
 def run_code(code: str) -> str:
     """Test helper method to run provided boxscript."""
-    t = tokenize(code)
-    o = Script(t)
     stdout = io.StringIO()
     with redirect_stdout(stdout):
-        o.execute()
+        Interpreter(code).run()
     return stdout.getvalue()
 
 
@@ -32,7 +29,7 @@ class TestExecution(unittest.TestCase):
             └───────────────┘
             """
         s = dedent(s).strip()
-        self.assertEqual(run_code(s).strip(), "0")
+        self.assertEqual(run_code(s), "0\n")
 
     def test_01234567(self) -> None:
         """Output: 01234567"""
@@ -67,7 +64,7 @@ class TestExecution(unittest.TestCase):
             └────────────────┘
             """
         s = dedent(s).strip()
-        self.assertEquals(run_code(s), "01234567")
+        self.assertEqual(run_code(s), "01234567\n")
 
     def test_invalid_code(self) -> None:
         """Provide invalid code"""
@@ -104,4 +101,4 @@ class TestExecution(unittest.TestCase):
             └────────────────┘
             """
         s = dedent(s).strip()
-        self.assertRaises(BaseException, print(run_code(s)))
+        self.assertRaises(Exception, run_code(s))
