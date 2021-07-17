@@ -10,7 +10,7 @@ def run_code(code: str) -> str:
     """Test helper method to run provided boxscript."""
     stdout = io.StringIO()
     with redirect_stdout(stdout):
-        Interpreter(code).run()
+        Interpreter().run(code)
     return stdout.getvalue()
 
 
