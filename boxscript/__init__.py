@@ -34,6 +34,6 @@ class Interpreter:
                 print(e)
             except RecursionError:
                 # this does not matter, just stop the code
-                print("maximum recurion depth exceeded")
+                print("maximum recursion depth exceeded")
         else:
             print(box_error)
