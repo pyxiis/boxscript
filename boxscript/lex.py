@@ -15,7 +15,7 @@ from enum import Enum
 import functools
 import re
 
-from boxes import valid
+from boxscript.boxes import valid
 
 __all__ = ["Atom", "Node", "Token", "tokenize"]
 
