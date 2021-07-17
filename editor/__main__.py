@@ -8,6 +8,8 @@ from rich.style import Style
 from rich.text import Text
 from rich.theme import Theme
 
+from boxscript.interpreter import Interpreter
+
 co = Console()
 
 
@@ -192,7 +194,9 @@ def main() -> None:
                 )
             )
 
-        print(f"send help!{term.normal}")
+        print(f"{term.normal}")
+        print(val)
+        return val
 
 
-main()
+Interpreter().run(main())
