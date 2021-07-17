@@ -41,6 +41,16 @@ Atom = Enum(
         "EXEC_END",
         "NEWLINE",
         "ASSIGN",
+        "LT",
+        "GT",
+        "EQ",
+        "NE",
+        "ADD",
+        "SUB",
+        "MULT",
+        "DIV",
+        "MOD",
+        "POW",
     ],
 )
 
@@ -65,7 +75,7 @@ class Token(Node):
 
     __slots__ = ["type", "value"]
 
-    def __init__(self, type: Atom, value: int = None):
+    def __init__(self, type: Atom, value: int = 0):
         """Creates a BoxScript token.
 
         Args:
@@ -75,6 +85,11 @@ class Token(Node):
         """
         self.type = type
         self.value = value
+
+    def __str__(self):
+        if self.type == Atom.NUM:
+            return f"<{self.type}: {self.value}>"
+        return f"<{self.type}>"
 
 
 def tokenize(code: str) -> list[Token]:
@@ -154,6 +169,16 @@ def tokenize(code: str) -> list[Token]:
                     "▭": Atom.OUT,
                     "▯": Atom.IN,
                     "\n": Atom.NEWLINE,
+                    "▐": Atom.ADD,
+                    "▌": Atom.SUB,
+                    "▘": Atom.MULT,
+                    "▝": Atom.DIV,
+                    "▗": Atom.MOD,
+                    "▖": Atom.POW,
+                    "▧": Atom.GT,
+                    "▨": Atom.LT,
+                    "▤": Atom.EQ,
+                    "▥": Atom.NE,
                 }
 
                 if code[0] in singles:

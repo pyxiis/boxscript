@@ -71,6 +71,18 @@ while True:
         m[+0] = m[+0] ^ m[+2]
 ```
 
+Note: this example was made before the implementation of arithmetic and comparison operators. Creating this is now much simpler:
+
+```bs
+┏━━━━━━━━━━━━┓
+┃◇▀▄▨▀▀▄▀▄   ┃
+┡━━━━━━━━━━━━┩
+│▭◇▀▄▐▀▀▀▄▄▄▄│
+├────────────┤
+│▀▄◈◇▀▄▐▀▀   │
+└────────────┘
+```
+
 ## Hello World
 
 We can also write a program which outputs "Hello, world!".

@@ -7,11 +7,9 @@ import collections
 import itertools
 from typing import Optional
 
-from lang.lex import Atom, Node, Token
+from boxscript.lex import Atom, Node, Token
 
 Memory = collections.defaultdict(lambda: 0)
-STDOut = ""
-c = 0
 
 
 def shunting_yard(tokens: list[Token]) -> list[Token]:
@@ -31,52 +29,169 @@ def shunting_yard(tokens: list[Token]) -> list[Token]:
     for token in tokens:
         if token.type is Atom.NUM:
             output.append(token)
+        elif token.type is Atom.POW:
+            stack.append(token)
         elif token.type in [Atom.MEM, Atom.NOT]:
-            while any(
-                op in map(lambda e: e.type, stack) for op in [Atom.MEM, Atom.NOT]
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [Atom.MEM, Atom.NOT, Atom.POW, Atom.L_PAREN]
+                )
+                and stack[-1].type != Atom.L_PAREN
+            ):
+                output.append(stack.pop())
+            stack.append(token)
+        elif token.type in [Atom.MULT, Atom.DIV, Atom.MOD]:
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [
+                        Atom.MULT,
+                        Atom.DIV,
+                        Atom.MOD,
+                        Atom.MEM,
+                        Atom.NOT,
+                        Atom.POW,
+                    ]
+                )
+                and stack[-1].type != Atom.L_PAREN
+            ):
+                output.append(stack.pop())
+            stack.append(token)
+        elif token.type in [Atom.ADD, Atom.SUB]:
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [
+                        Atom.ADD,
+                        Atom.SUB,
+                        Atom.MULT,
+                        Atom.DIV,
+                        Atom.MOD,
+                        Atom.MEM,
+                        Atom.NOT,
+                        Atom.POW,
+                    ]
+                )
+                and stack[-1].type != Atom.L_PAREN
             ):
                 output.append(stack.pop())
             stack.append(token)
         elif token.type in [Atom.L_SHIFT, Atom.R_SHIFT]:
-            while any(
-                op in map(lambda e: e.type, stack)
-                for op in [Atom.L_SHIFT, Atom.R_SHIFT, Atom.MEM, Atom.NOT]
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [
+                        Atom.L_SHIFT,
+                        Atom.R_SHIFT,
+                        Atom.ADD,
+                        Atom.SUB,
+                        Atom.MULT,
+                        Atom.DIV,
+                        Atom.MOD,
+                        Atom.MEM,
+                        Atom.NOT,
+                        Atom.POW,
+                    ]
+                )
+                and stack[-1].type != Atom.L_PAREN
             ):
                 output.append(stack.pop())
             stack.append(token)
         elif token.type is Atom.AND:
-            while any(
-                op in map(lambda e: e.type, stack)
-                for op in [Atom.AND, Atom.L_SHIFT, Atom.R_SHIFT, Atom.MEM, Atom.NOT]
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [
+                        Atom.AND,
+                        Atom.L_SHIFT,
+                        Atom.ADD,
+                        Atom.SUB,
+                        Atom.R_SHIFT,
+                        Atom.MULT,
+                        Atom.DIV,
+                        Atom.MOD,
+                        Atom.MEM,
+                        Atom.NOT,
+                        Atom.POW,
+                    ]
+                )
+                and stack[-1].type != Atom.L_PAREN
             ):
                 output.append(stack.pop())
             stack.append(token)
         elif token.type is Atom.XOR:
-            while any(
-                op in map(lambda e: e.type, stack)
-                for op in [
-                    Atom.XOR,
-                    Atom.AND,
-                    Atom.L_SHIFT,
-                    Atom.R_SHIFT,
-                    Atom.MEM,
-                    Atom.NOT,
-                ]
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [
+                        Atom.XOR,
+                        Atom.AND,
+                        Atom.L_SHIFT,
+                        Atom.R_SHIFT,
+                        Atom.ADD,
+                        Atom.SUB,
+                        Atom.MULT,
+                        Atom.DIV,
+                        Atom.MOD,
+                        Atom.MEM,
+                        Atom.NOT,
+                        Atom.POW,
+                    ]
+                )
+                and stack[-1].type != Atom.L_PAREN
             ):
                 output.append(stack.pop())
             stack.append(token)
         elif token.type is Atom.OR:
-            while any(
-                op in map(lambda e: e.type, stack)
-                for op in [
-                    Atom.OR,
-                    Atom.XOR,
-                    Atom.AND,
-                    Atom.L_SHIFT,
-                    Atom.R_SHIFT,
-                    Atom.MEM,
-                    Atom.NOT,
-                ]
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [
+                        Atom.OR,
+                        Atom.XOR,
+                        Atom.AND,
+                        Atom.L_SHIFT,
+                        Atom.R_SHIFT,
+                        Atom.ADD,
+                        Atom.SUB,
+                        Atom.MULT,
+                        Atom.DIV,
+                        Atom.MOD,
+                        Atom.MEM,
+                        Atom.NOT,
+                        Atom.POW,
+                    ]
+                )
+                and stack[-1].type != Atom.L_PAREN
+            ):
+                output.append(stack.pop())
+            stack.append(token)
+        elif token.type in [Atom.NE, Atom.EQ, Atom.LT, Atom.GT]:
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [
+                        Atom.NE,
+                        Atom.EQ,
+                        Atom.LT,
+                        Atom.GT,
+                        Atom.OR,
+                        Atom.XOR,
+                        Atom.AND,
+                        Atom.L_SHIFT,
+                        Atom.R_SHIFT,
+                        Atom.ADD,
+                        Atom.SUB,
+                        Atom.MULT,
+                        Atom.DIV,
+                        Atom.MOD,
+                        Atom.MEM,
+                        Atom.NOT,
+                        Atom.POW,
+                    ]
+                )
+                and stack[-1].type != Atom.L_PAREN
             ):
                 output.append(stack.pop())
             stack.append(token)
@@ -196,22 +311,55 @@ class Expression(Container):
             int: The value of the expression.
         """
         stack = [0]
-
         for child in self.children:
+            # keep in mind that the stack's order is reversed, so some operations must
+            # be done in reverse order
             if child.type is Atom.NUM:
                 stack.append(child.value)
             elif child.type is Atom.MEM:
                 stack.append(Memory[stack.pop()])
             elif child.type is Atom.L_SHIFT:
-                stack.append(stack.pop() << stack.pop())
+                a, b = stack.pop(), stack.pop()
+                stack.append(b << a)
             elif child.type is Atom.R_SHIFT:
-                stack.append(stack.pop() >> stack.pop())
+                a, b = stack.pop(), stack.pop()
+                stack.append(b >> a)
+            elif child.type is Atom.ADD:
+                stack.append(stack.pop() + stack.pop())
+            elif child.type is Atom.SUB:
+                a, b = stack.pop(), stack.pop()
+                stack.append(b - a)
+            elif child.type is Atom.MULT:
+                stack.append(stack.pop() * stack.pop())
+            elif child.type is Atom.DIV:
+                a, b = stack.pop(), stack.pop()
+                stack.append(b / a)
+            elif child.type is Atom.POW:
+                a, b = stack.pop(), stack.pop()
+                stack.append(b ** a)
+            elif child.type is Atom.MOD:
+                a, b = stack.pop(), stack.pop()
+                stack.append(b % a)
             elif child.type is Atom.AND:
                 stack.append(stack.pop() & stack.pop())
             elif child.type is Atom.OR:
                 stack.append(stack.pop() | stack.pop())
             elif child.type is Atom.XOR:
                 stack.append(stack.pop() ^ stack.pop())
+            elif child.type is Atom.NOT:
+                stack.append(~stack.pop())
+            elif child.type is Atom.LT:
+                stack.append(
+                    int(stack.pop() > stack.pop())
+                )  # reverse order because of how the stack is organized
+            elif child.type is Atom.GT:
+                stack.append(
+                    int(stack.pop() < stack.pop())
+                )  # reverse order because of how the stack is organized
+            elif child.type is Atom.EQ:
+                stack.append(int(stack.pop() == stack.pop()))
+            elif child.type is Atom.NE:
+                stack.append(int(stack.pop() != stack.pop()))
 
         return stack.pop()
 
@@ -269,9 +417,9 @@ class Line(Container):
 
             class Assign(Container):
                 def execute(self) -> int:
-                    value = self.children[1].execute()
                     loc = self.children[0].execute()
-                    Memory[loc] = value
+                    value = self.children[1].execute()
+                    Memory[loc] = round(value)
                     return value
 
             assignment = Assign(children=[loc, value])
@@ -340,11 +488,7 @@ class Line(Container):
             r = 0
 
         if self.output:
-            print(f"output: {chr(r)}")
-
-        # x = str(Memory)
-        # if len(x) < 100:
-        #     print(f"{self.line_number}: {Memory}")
+            print(end=chr(round(r)))
 
         return r
 

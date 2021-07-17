@@ -10,4 +10,21 @@ BoxScript's most defining feature is encouraging **thinking inside the box** whe
 
 ## Installation
 
-This implementation of BoxScript has a single dependency: `rich`. Install this with `pip install rich` or `pip install -r requirements.txt`.
+1. Clone the repository
+
+```sh
+git clone https://github.com/somthecoder/CodeJam-Discrete-Dingos.git
+```
+
+2. Install the dependencies
+
+```sh
+pip install -r requirements.txt
+```
+
+## Contributors
+
+* [エニラ#0013](https://github.com/pyxiis): Programmer
+* [A Real Username#8028](https://github.com/onerandomusername): Debugger
+* [Slipperee_Slime#3232](https://github.com/Slipperee-CODE): Slime
+* [No u#6720](https://github.com/somthecoder): Leader
