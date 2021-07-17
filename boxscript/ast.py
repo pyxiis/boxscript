@@ -5,9 +5,9 @@ This module provides the necessary functions to construct the AST for BoxScript.
 
 import collections
 import itertools
-from typing import Optional
+from typing import Generator, Optional
 
-from boxscript.lex import Atom, Node, Token
+from lex import Atom, Node, Token
 
 Memory = collections.defaultdict(lambda: 0)
 
@@ -32,136 +32,167 @@ def shunting_yard(tokens: list[Token]) -> list[Token]:
         elif token.type is Atom.POW:
             stack.append(token)
         elif token.type in [Atom.MEM, Atom.NOT]:
-            while any(
-                op in map(lambda e: e.type, stack)
-                for op in [Atom.MEM, Atom.NOT, Atom.POW, Atom.L_PAREN]
-            ) and stack[-1].type != Atom.L_PAREN:
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [Atom.MEM, Atom.NOT, Atom.POW, Atom.L_PAREN]
+                )
+                and stack[-1].type != Atom.L_PAREN
+            ):
                 output.append(stack.pop())
             stack.append(token)
         elif token.type in [Atom.MULT, Atom.DIV, Atom.MOD]:
-            while any(
-                op in map(lambda e: e.type, stack)
-                for op in [Atom.MULT, Atom.DIV, Atom.MOD, Atom.MEM, Atom.NOT, Atom.POW]
-            ) and stack[-1].type != Atom.L_PAREN:
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [
+                        Atom.MULT,
+                        Atom.DIV,
+                        Atom.MOD,
+                        Atom.MEM,
+                        Atom.NOT,
+                        Atom.POW,
+                    ]
+                )
+                and stack[-1].type != Atom.L_PAREN
+            ):
                 output.append(stack.pop())
             stack.append(token)
         elif token.type in [Atom.ADD, Atom.SUB]:
-            while any(
-                op in map(lambda e: e.type, stack)
-                for op in [
-                    Atom.ADD,
-                    Atom.SUB,
-                    Atom.MULT,
-                    Atom.DIV,
-                    Atom.MOD,
-                    Atom.MEM,
-                    Atom.NOT,
-                    Atom.POW,
-                ]
-            ) and stack[-1].type != Atom.L_PAREN:
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [
+                        Atom.ADD,
+                        Atom.SUB,
+                        Atom.MULT,
+                        Atom.DIV,
+                        Atom.MOD,
+                        Atom.MEM,
+                        Atom.NOT,
+                        Atom.POW,
+                    ]
+                )
+                and stack[-1].type != Atom.L_PAREN
+            ):
                 output.append(stack.pop())
             stack.append(token)
         elif token.type in [Atom.L_SHIFT, Atom.R_SHIFT]:
-            while any(
-                op in map(lambda e: e.type, stack)
-                for op in [
-                    Atom.L_SHIFT,
-                    Atom.R_SHIFT,
-                    Atom.ADD,
-                    Atom.SUB,
-                    Atom.MULT,
-                    Atom.DIV,
-                    Atom.MOD,
-                    Atom.MEM,
-                    Atom.NOT,
-                    Atom.POW,
-                ]
-            ) and stack[-1].type != Atom.L_PAREN:
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [
+                        Atom.L_SHIFT,
+                        Atom.R_SHIFT,
+                        Atom.ADD,
+                        Atom.SUB,
+                        Atom.MULT,
+                        Atom.DIV,
+                        Atom.MOD,
+                        Atom.MEM,
+                        Atom.NOT,
+                        Atom.POW,
+                    ]
+                )
+                and stack[-1].type != Atom.L_PAREN
+            ):
                 output.append(stack.pop())
             stack.append(token)
         elif token.type is Atom.AND:
-            while any(
-                op in map(lambda e: e.type, stack)
-                for op in [
-                    Atom.AND,
-                    Atom.L_SHIFT,
-                    Atom.ADD,
-                    Atom.SUB,
-                    Atom.R_SHIFT,
-                    Atom.MULT,
-                    Atom.DIV,
-                    Atom.MOD,
-                    Atom.MEM,
-                    Atom.NOT,
-                    Atom.POW,
-                ]
-            ) and stack[-1].type != Atom.L_PAREN:
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [
+                        Atom.AND,
+                        Atom.L_SHIFT,
+                        Atom.ADD,
+                        Atom.SUB,
+                        Atom.R_SHIFT,
+                        Atom.MULT,
+                        Atom.DIV,
+                        Atom.MOD,
+                        Atom.MEM,
+                        Atom.NOT,
+                        Atom.POW,
+                    ]
+                )
+                and stack[-1].type != Atom.L_PAREN
+            ):
                 output.append(stack.pop())
             stack.append(token)
         elif token.type is Atom.XOR:
-            while any(
-                op in map(lambda e: e.type, stack)
-                for op in [
-                    Atom.XOR,
-                    Atom.AND,
-                    Atom.L_SHIFT,
-                    Atom.R_SHIFT,
-                    Atom.ADD,
-                    Atom.SUB,
-                    Atom.MULT,
-                    Atom.DIV,
-                    Atom.MOD,
-                    Atom.MEM,
-                    Atom.NOT,
-                    Atom.POW,
-                ]
-            ) and stack[-1].type != Atom.L_PAREN:
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [
+                        Atom.XOR,
+                        Atom.AND,
+                        Atom.L_SHIFT,
+                        Atom.R_SHIFT,
+                        Atom.ADD,
+                        Atom.SUB,
+                        Atom.MULT,
+                        Atom.DIV,
+                        Atom.MOD,
+                        Atom.MEM,
+                        Atom.NOT,
+                        Atom.POW,
+                    ]
+                )
+                and stack[-1].type != Atom.L_PAREN
+            ):
                 output.append(stack.pop())
             stack.append(token)
         elif token.type is Atom.OR:
-            while any(
-                op in map(lambda e: e.type, stack)
-                for op in [
-                    Atom.OR,
-                    Atom.XOR,
-                    Atom.AND,
-                    Atom.L_SHIFT,
-                    Atom.R_SHIFT,
-                    Atom.ADD,
-                    Atom.SUB,
-                    Atom.MULT,
-                    Atom.DIV,
-                    Atom.MOD,
-                    Atom.MEM,
-                    Atom.NOT,
-                    Atom.POW,
-                ]
-            ) and stack[-1].type != Atom.L_PAREN:
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [
+                        Atom.OR,
+                        Atom.XOR,
+                        Atom.AND,
+                        Atom.L_SHIFT,
+                        Atom.R_SHIFT,
+                        Atom.ADD,
+                        Atom.SUB,
+                        Atom.MULT,
+                        Atom.DIV,
+                        Atom.MOD,
+                        Atom.MEM,
+                        Atom.NOT,
+                        Atom.POW,
+                    ]
+                )
+                and stack[-1].type != Atom.L_PAREN
+            ):
                 output.append(stack.pop())
             stack.append(token)
         elif token.type in [Atom.NE, Atom.EQ, Atom.LT, Atom.GT]:
-            while any(
-                op in map(lambda e: e.type, stack)
-                for op in [
-                    Atom.NE,
-                    Atom.EQ,
-                    Atom.LT,
-                    Atom.GT,
-                    Atom.OR,
-                    Atom.XOR,
-                    Atom.AND,
-                    Atom.L_SHIFT,
-                    Atom.R_SHIFT,
-                    Atom.ADD,
-                    Atom.SUB,
-                    Atom.MULT,
-                    Atom.DIV,
-                    Atom.MOD,
-                    Atom.MEM,
-                    Atom.NOT,
-                    Atom.POW,
-                ]
-            ) and stack[-1].type != Atom.L_PAREN:
+            while (
+                any(
+                    op in map(lambda e: e.type, stack)
+                    for op in [
+                        Atom.NE,
+                        Atom.EQ,
+                        Atom.LT,
+                        Atom.GT,
+                        Atom.OR,
+                        Atom.XOR,
+                        Atom.AND,
+                        Atom.L_SHIFT,
+                        Atom.R_SHIFT,
+                        Atom.ADD,
+                        Atom.SUB,
+                        Atom.MULT,
+                        Atom.DIV,
+                        Atom.MOD,
+                        Atom.MEM,
+                        Atom.NOT,
+                        Atom.POW,
+                    ]
+                )
+                and stack[-1].type != Atom.L_PAREN
+            ):
                 output.append(stack.pop())
             stack.append(token)
         elif token.type is Atom.L_PAREN:
@@ -411,9 +442,9 @@ class Line(Container):
         # test parentheses
         parens = 0
         for token in self.children:
-            if token.type == Token.L_PAREN:
+            if token.type == Atom.L_PAREN:
                 parens += 1
-            elif token.type == Token.R_PAREN:
+            elif token.type == Atom.R_PAREN:
                 parens -= 1
             if parens < 0:
                 return SyntaxError(f"Unmatched parentheses at line {self.line_number}")
@@ -435,11 +466,11 @@ class Line(Container):
             )
 
         # test outputs
-        out_count = len(filter(lambda child: child.type is Atom.OUTPUT, self.children))
+        out_count = len([child for child in self.children if child.type is Atom.OUT])
         if out_count > 1:
             return SyntaxError(f"Too many output operations on line {self.line_number}")
         elif out_count == 1:
-            if self.children[0].type is not Atom.OUTPUT:
+            if self.children[0].type is not Atom.OUT:
                 return SyntaxError(
                     f"Output operation must be at the beginning of line "
                     f"{self.line_number}"
@@ -460,6 +491,26 @@ class Line(Container):
             print(end=chr(round(r)))
 
         return r
+
+    @classmethod
+    def get_lines(cls, node: Node) -> Generator["Line", None, None]:
+        """Gets all Lines under a specific Node.
+
+        Args:
+            node (Node): The root Node.
+
+        Yields:
+            Line: Every Line under the Node.
+        """
+        if isinstance(node, Line):
+            yield node
+
+        try:
+            for child in node.children:
+                for line in Line.get_lines(child):
+                    yield line
+        except AttributeError:
+            pass
 
 
 class Script(Container):
@@ -512,3 +563,8 @@ class Script(Container):
         self.children = [
             child for child in box_stack[0].children if not isinstance(child, Line)
         ]
+
+        for line in Line.get_lines(self):
+            line_error = line.valid()
+            if isinstance(line_error, SyntaxError):
+                raise line_error

@@ -1,6 +1,7 @@
-from boxscript.ast import Memory, Script
-from boxscript.boxes import valid
-from boxscript.lex import tokenize
+from ast import Memory, Script
+
+from boxes import valid
+from lex import tokenize
 
 
 class Interpreter:
@@ -22,10 +23,15 @@ class Interpreter:
 
     def run(self) -> None:
         """Runs the script."""
-        if not isinstance(valid(self.script), SyntaxError):
+        box_error = valid(self.script)
+        if not isinstance(box_error, SyntaxError):
             try:
                 Script(tokenize(self.script)).execute()
+                print()
             except (ValueError, ZeroDivisionError):
                 # printing negatives can be used as quick exit, as can division by 0
-                pass
-            print()
+                print()
+            except SyntaxError as e:
+                print(e)
+        else:
+            print(box_error)
