@@ -15,6 +15,8 @@ from enum import Enum
 import functools
 import re
 
+from boxscript.boxes import valid
+
 __all__ = ["Atom", "Node", "Token", "tokenize"]
 
 
@@ -101,6 +103,11 @@ def tokenize(code: str) -> list[Token]:
     Returns:
         list[Token]: The list of BS tokens.
     """
+    box_errors = valid(code)
+
+    if isinstance(box_errors, SyntaxError):
+        raise box_errors
+
     tokens = []
 
     while code:

@@ -5,11 +5,11 @@ This module provides the necessary functions to construct the AST for BoxScript.
 
 import collections
 import itertools
-from typing import Optional
+from typing import Generator, Optional
 
 from boxscript.lex import Atom, Node, Token
 
-Memory = collections.defaultdict(lambda: 0)
+Memory = collections.defaultdict(int)
 
 
 def shunting_yard(tokens: list[Token]) -> list[Token]:
@@ -442,9 +442,9 @@ class Line(Container):
         # test parentheses
         parens = 0
         for token in self.children:
-            if token.type == Token.L_PAREN:
+            if token.type == Atom.L_PAREN:
                 parens += 1
-            elif token.type == Token.R_PAREN:
+            elif token.type == Atom.R_PAREN:
                 parens -= 1
             if parens < 0:
                 return SyntaxError(f"Unmatched parentheses at line {self.line_number}")
@@ -466,11 +466,11 @@ class Line(Container):
             )
 
         # test outputs
-        out_count = len(filter(lambda child: child.type is Atom.OUTPUT, self.children))
+        out_count = len([child for child in self.children if child.type is Atom.OUT])
         if out_count > 1:
             return SyntaxError(f"Too many output operations on line {self.line_number}")
         elif out_count == 1:
-            if self.children[0].type is not Atom.OUTPUT:
+            if self.children[0].type is not Atom.OUT:
                 return SyntaxError(
                     f"Output operation must be at the beginning of line "
                     f"{self.line_number}"
@@ -491,6 +491,26 @@ class Line(Container):
             print(end=chr(round(r)))
 
         return r
+
+    @classmethod
+    def get_lines(cls, node: Node) -> Generator["Line", None, None]:
+        """Gets all Lines under a specific Node.
+
+        Args:
+            node (Node): The root Node.
+
+        Yields:
+            Line: Every Line under the Node.
+        """
+        if isinstance(node, Line):
+            yield node
+
+        try:
+            for child in node.children:
+                for line in Line.get_lines(child):
+                    yield line
+        except AttributeError:
+            pass
 
 
 class Script(Container):
@@ -543,3 +563,8 @@ class Script(Container):
         self.children = [
             child for child in box_stack[0].children if not isinstance(child, Line)
         ]
+
+        for line in Line.get_lines(self):
+            line_error = line.valid()
+            if isinstance(line_error, SyntaxError):
+                raise line_error
