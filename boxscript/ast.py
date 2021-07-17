@@ -7,7 +7,7 @@ import collections
 import itertools
 from typing import Generator, Optional
 
-from lex import Atom, Node, Token
+from boxscript.lex import Atom, Node, Token
 
 Memory = collections.defaultdict(lambda: 0)
 

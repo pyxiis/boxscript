@@ -1,7 +1,6 @@
-from ast import Memory, Script
-
-from boxes import valid
-from lex import tokenize
+from boxscript.ast import Memory, Script
+from boxscript.boxes import valid
+from boxscript.lex import tokenize
 
 
 class Interpreter:
