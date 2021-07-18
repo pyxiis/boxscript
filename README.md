@@ -21,7 +21,6 @@ git clone https://github.com/somthecoder/CodeJam-Discrete-Dingos.git
 * Python 3.9+
 * A font which supports [Block Elements](https://www.unicode.org/charts/PDF/U1FB00.pdf), [Box Drawing](https://www.unicode.org/charts/PDF/U2500.pdf), and [Geometric Shapes](https://unicode.org/charts/PDF/U25A0.pdf)
 
-
 ## Contributors
 
 * [エニラ#0013](https://github.com/pyxiis): Programmer
