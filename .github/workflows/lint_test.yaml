@@ -85,7 +85,7 @@ jobs:
       # flake8 action. As pre-commit does not support user installs, we set
       # PIP_USER=0 to not do a user install.
       - name: Run pre-commit hooks
-        run: export PIP_USER=0; SKIP="no-commit-to-branch,flake8" pre-commit run --all-files
+        run: export PIP_USER=0; SKIP="no-commit-to-branch,black,flake8" pre-commit run --all-files
 
       # Run black seperately as we don't want to reformat the files
       # just error if something isn't formatted correctly.
