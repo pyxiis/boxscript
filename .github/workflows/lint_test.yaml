@@ -49,20 +49,23 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      # Disable caching because Cython compilations are not cached. This results
+      # in missing modules for tests.
+
       # This step caches our Python dependencies. To make sure we
       # only restore a cache when the dependencies, the python version,
       # the runner operating system, and the dependency location haven't
       # changed, we create a cache key that is a composite of those states.
       #
       # Only when the context is exactly the same, we will restore the cache.
-      - name: Python Dependency Caching
-        uses: actions/cache@v2
-        id: python_cache
-        with:
-          path: ${{ env.PYTHONUSERBASE }}
-          key: "python-0-${{ runner.os }}-${{ env.PYTHONUSERBASE }}-\
-          ${{ steps.python.outputs.python-version }}-\
-          ${{ hashFiles('./pyproject.toml', './poetry.lock') }}"
+      # - name: Python Dependency Caching
+      #   uses: actions/cache@v2
+      #   id: python_cache
+      #   with:
+      #     path: ${{ env.PYTHONUSERBASE }}
+      #     key: "python-0-${{ runner.os }}-${{ env.PYTHONUSERBASE }}-\
+      #     ${{ steps.python.outputs.python-version }}-\
+      #     ${{ hashFiles('./pyproject.toml', './poetry.lock') }}"
 
       # Install our dependencies if we did not restore a dependency cache
       - name: Install dependencies using poetry
