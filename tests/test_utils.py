@@ -1,4 +1,7 @@
 import numpy
+import pyximport  # noqa: I201
+
+pyximport.install()
 
 
 def test_matrix():
