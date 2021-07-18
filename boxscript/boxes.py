@@ -126,7 +126,7 @@ def valid(text: str) -> Optional[SyntaxError]:
             strip_c = strip_c.replace(comment, " " * len(comment))
 
         # check for invalid characters
-        for j, char in enumerate(strip_c):
+        for _j, char in enumerate(strip_c):
             if char not in CHARACTERS:
                 return SyntaxError(f"Invalid character `{char}` at line {i}")
 

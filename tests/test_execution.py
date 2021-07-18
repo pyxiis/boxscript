@@ -1,7 +1,7 @@
-from contextlib import redirect_stdout
 import io
-from textwrap import dedent
 import unittest
+from contextlib import redirect_stdout
+from textwrap import dedent
 
 from boxscript.interpreter import Interpreter
 
