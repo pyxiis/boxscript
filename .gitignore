@@ -11,6 +11,9 @@ env
 # Unittest reports
 .coverage*
 
+# Cache
+.cache
+
 # Logs
 *.log
 
