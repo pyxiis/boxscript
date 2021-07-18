@@ -11,6 +11,8 @@ repos:
       - id: check-toml
       - id: check-yaml
       - id: end-of-file-fixer
+      - id: no-commit-to-branch
+        args: [--branch=main, --pattern=release/*]
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
 
