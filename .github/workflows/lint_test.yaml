@@ -12,7 +12,9 @@ on:
 
 # Brand new concurrency setting! This ensures that not more than one run can be triggered for the same commit.
 # It is useful for pull requests coming from the main repository since both triggers will match.
-concurrency: lint-${{ github.sha }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lint-test:
@@ -79,11 +81,16 @@ jobs:
           ${{ steps.python.outputs.python-version }}-\
           ${{ hashFiles('./.pre-commit-config.yaml') }}"
 
-      # We will not run `flake8` here, as we will use a separate flake8
-      # action. As pre-commit does not support user installs, we set
+      # We will not run `black` or `flake8` here, as we will use a separate
+      # flake8 action. As pre-commit does not support user installs, we set
       # PIP_USER=0 to not do a user install.
       - name: Run pre-commit hooks
-        run: export PIP_USER=0; SKIP="flake8" pre-commit run --all-files
+        run: export PIP_USER=0; SKIP="no-commit-to-branch,black,flake8" pre-commit run --all-files
+
+      # Run black seperately as we don't want to reformat the files
+      # just error if something isn't formatted correctly.
+      - name: Check files with black
+        run: black . --check --diff --color
 
       # Run flake8 and have it format the linting errors in the format of
       # the GitHub Workflow command to register error annotations. This
