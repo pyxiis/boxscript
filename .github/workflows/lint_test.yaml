@@ -70,6 +70,9 @@ jobs:
         run: |
           pip install poetry
           poetry install
+      # Compile Cython stuff
+      - name: Run setup.py
+        run: python setup.py build_ext --inplace
       # This step caches our pre-commit environment. To make sure we
       # do create a new environment when our pre-commit setup changes,
       # we create a cache key based on relevant factors.
