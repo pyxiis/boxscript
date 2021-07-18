@@ -10,11 +10,8 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-<<<<<<< HEAD
-=======
 numpy = "^1.21.0"
 Cython = "^0.29.24"
->>>>>>> 712cc5f (Add method to convert string to matrix)
 
 [tool.poetry.dev-dependencies]
 black = "^21.7b0"
