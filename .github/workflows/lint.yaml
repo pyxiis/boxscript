@@ -98,6 +98,9 @@ jobs:
         --format='::error file=%(path)s,line=%(row)d,col=%(col)d::\
         [flake8] %(code)s: %(text)s'"
 
+      # Run tests with pytest-cov to generate a coverage report
+      # This is saved to ./.coverage to be used by codecov to link a
+      # coverage report to github.
       - name: Run tests and generate coverage report
         run: pytest -n auto --cov --disable-warnings -q
 
