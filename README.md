@@ -1,6 +1,6 @@
 # BoxScript
 
-## Future BoxScript development will happen in the rs repo
+**Future BoxScript development will happen in the rs repo**
 
 ![logo](./logo.png)
 
