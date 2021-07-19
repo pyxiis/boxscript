@@ -1,6 +1,10 @@
 # BoxScript
 
-![logo](./logo.png)
+[![Lint](https://github.com/pyxiis/boxscript/actions/workflows/lint_test.yaml/badge.svg?style=flat)](https://github.com/pyxiis/boxscript/actions/workflows/lint_test.yaml "Lint and Test")
+[![Code Coverage](https://img.shields.io/codecov/c/gh/pyxiis/boxscript?token=SWN2XPNS7N&style=flat)](https://app.codecov.io/gh/pyxiis/boxscript "Code Coverage")
+[![Python](https://img.shields.io/static/v1?label=Python&message=3.9&color=blue&logo=Python&style=flat)](https://www.python.org/downloads/ "Python 3.9")
+[![License](https://img.shields.io/github/license/pyxiis/boxscript?style=flat)](./LICENSE)
+[![Code Style](https://img.shields.io/static/v1?label=code%20style&message=black&color=000000&style=flat)](https://github.com/psf/black)
 
 BoxScript, or BS for short, is a language based on the idea of "boxes".
 
@@ -13,14 +17,13 @@ BoxScript's most defining feature is encouraging **thinking inside the box** whe
 1. Clone the repository
 
 ```sh
-git clone https://github.com/somthecoder/CodeJam-Discrete-Dingos.git
+git clone https://github.com/pyxiis/boxscript.git
 ```
 
 ## Requirements
 
 * Python 3.9+
 * A font which supports [Block Elements](https://www.unicode.org/charts/PDF/U1FB00.pdf), [Box Drawing](https://www.unicode.org/charts/PDF/U2500.pdf), and [Geometric Shapes](https://unicode.org/charts/PDF/U25A0.pdf)
-
 
 ## Contributors
 
