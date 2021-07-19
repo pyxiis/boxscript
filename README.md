@@ -1,5 +1,7 @@
 # BoxScript
 
+## Future BoxScript development will happen in the rs repo
+
 ![logo](./logo.png)
 
 BoxScript, or BS for short, is a language based on the idea of "boxes".
